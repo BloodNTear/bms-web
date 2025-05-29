@@ -59,10 +59,9 @@ function LoginPage(){
         if(!requestStatus){
             setErrMsg(requestErrMsg);
         }else{
-            const tokens = responseData?.token;
-            const role = responseData?.role;
+            const token = responseData?.tokenKey;
     
-            setAuth({role, tokens});
+            setAuth({token});
             setUser('');
             setPassword('');
 

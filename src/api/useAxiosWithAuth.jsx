@@ -20,7 +20,7 @@ export const useAxiosWithAuth = () => {
             (config) => {
                 setLoading(true); // Show loading indicator
                 if (auth?.tokens?.accessToken && config.url !== "User/Login") {
-                    config.headers["Authorization"] = `Bearer ${auth.tokens.accessToken}`;
+                    config.headers["Authorization"] = `Bearer ${auth.token}`;
                 }
                 config.headers["Content-Type"] = "application/json";
                 config.withCredentials = true;
