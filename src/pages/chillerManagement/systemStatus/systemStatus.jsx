@@ -16,7 +16,7 @@ function SystemStatus({sytemData}){
 
     useEffect(() => {
         async function fetchData(){
-            const GET_URL = "http://192.168.10.211:3000/points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398http://192.168.10.211:3000/points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
+            const GET_URL = "points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398http://192.168.10.211:3000/points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
             try{
                 const response  = await axiosInstance.get(GET_URL);
                 if(response?.data){
