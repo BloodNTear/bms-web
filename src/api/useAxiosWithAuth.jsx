@@ -19,7 +19,7 @@ export const useAxiosWithAuth = () => {
         const requestInterceptor = axiosInstance.interceptors.request.use(
             (config) => {
                 setLoading(true); // Show loading indicator
-                if (auth?.tokens?.accessToken && config.url !== "User/Login") {
+                if (auth?.token && config.url !== "account/login") {
                     config.headers["Authorization"] = `Bearer ${auth.token}`;
                 }
                 config.headers["Content-Type"] = "application/json";
