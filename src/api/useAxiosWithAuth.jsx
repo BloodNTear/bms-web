@@ -5,7 +5,7 @@ import  AuthContext  from '../contexts/authContext';
 import { useLoading } from '../utilities/loadingContext';
 
 const axiosInstance = axios.create({
-    baseURL: 'https://192.168.10.211:3000/',
+    baseURL: 'http://192.168.10.211:3000/',
     //baseURL: 'https://knkhomeservice.azurewebsites.net/',
     timeout: 20000
 });
