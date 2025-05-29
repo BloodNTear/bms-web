@@ -74,7 +74,7 @@ function SystemStatus({sytemData}){
                 />
                 <InfoDisplayCase 
                     title="Nhiệt độ nước cấp:"
-                    info={GetValue("386d48cda30e03071cec3da5")}
+                    info={GetValue("386d46c29340f70714423592")}
                 />
                 <InfoDisplayCase 
                     title="Nhiệt độ nước hồi:"
