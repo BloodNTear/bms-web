@@ -1,0 +1,48 @@
+.system-status-wrapper{
+    width: 100%;
+    height: 100%;
+}
+
+.system-status-wrapper .title{
+    width: 100%;
+    height: 10%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.system-status-wrapper .control-buttons{
+    width: 100%;
+    height: 20%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    padding: 5px;
+}
+
+.system-status-wrapper .control-buttons .control-button{
+    width: 33%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 2px solid rgba(255,255,255, .2);    
+    backdrop-filter: blur(30px);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255,255,255, .2);
+
+    cursor: pointer;
+}
+
+.system-status-wrapper .info-display{
+    width: 100%;
+    height: 70%;
+    padding: 5px;
+}

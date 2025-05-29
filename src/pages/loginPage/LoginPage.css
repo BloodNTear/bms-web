@@ -1,0 +1,159 @@
+.login-wrapper {
+    height: 100%;
+    width: 100%;
+
+    min-width: 100%;
+    min-height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form {
+    width: fit-content;
+    height: fit-content;
+
+    min-width: 420px;
+
+    max-width: 420px;
+    padding: 30px 40px;
+    box-sizing: border-box;
+
+    background: transparent;
+    border: 2px solid rgba(255,255,255, .2);    
+    backdrop-filter: blur(30px);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255,255,255, .2);
+}
+
+.login-form .login-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-wrapper .errorSection {
+    text-align: center;
+    color: red;
+    margin: 20px 0 0 0;
+    font-weight: 600;
+}
+
+.login-wrapper .input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+}
+
+.login-wrapper .input-box input {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    border: none;
+    background: transparent;
+    border: 2px solid rgba(255,255,255, .2);    
+    backdrop-filter: blur(30px);
+    box-shadow: 0 0 10px rgba(255,255,255, .2);
+    border-radius: 40px;
+    font-size: 1rem;
+    padding: 20px 45px 20px 20px;
+    box-sizing: border-box;
+
+    background-color: transparent;
+}
+
+.login-wrapper .input-box input::placeholder {
+    color: #fff;
+}
+
+.login-wrapper .input-box .icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+}
+
+.login-wrapper .remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin: -15px 0 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.login-wrapper .remember-forgot label input {
+    margin-right: 4px;
+}
+
+.login-wrapper .remember-forgot a {
+    text-decoration: none;
+}
+
+.login-wrapper .remember-forgot a:hover {
+    text-decoration: underline;
+}
+
+.login-wrapper button {
+    width: 100%;
+    height: 50px;
+    outline: none;
+    border: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 700;
+
+    background: transparent;
+    border: 2px solid rgba(255,255,255, .2);    
+    backdrop-filter: blur(30px);
+    box-shadow: 0 0 10px rgba(255,255,255, .2);
+
+    color: #fff;
+}
+
+.login-wrapper button:hover{
+    background: rgba(255, 255, 255, 0.6);
+    color: black;
+}
+
+.login-wrapper .register-link {
+    font-size: 0.9rem;
+    text-align: center;
+    margin: 20px 0 15px;
+}
+
+.login-wrapper .register-link p a {
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-wrapper .register-link p a:hover {
+    text-decoration: underline;
+}
+
+/* ✅ Responsive Additions */
+@media (max-width: 480px) {
+
+    .login-form {
+        padding: 20px;
+    }
+
+    .login-form h1 {
+        font-size: 1.5rem;
+    }
+
+    .login-form .input-box input {
+        font-size: 0.95rem;
+        padding: 16px 40px 16px 16px;
+    }
+
+    .login-form .remember-forgot {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
