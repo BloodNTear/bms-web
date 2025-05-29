@@ -52,13 +52,14 @@ function LoginPage(){
                                             })
                                           );
         const responseData = response?.data;
-
-        console.log(responseData.tokenKey);
         
-        if(responseData){
-            setErrMsg("Cannot login");
+        const requestStatus = responseData?.status;
+        const requestErrMsg = responseData?.errorMessage;
+
+        if(!requestStatus){
+            setErrMsg(requestErrMsg);
         }else{
-            const token = responseData?.tokenKey;
+            const token = responseData?.data.tokenKey;
     
             setAuth({token});
             setUser('');
