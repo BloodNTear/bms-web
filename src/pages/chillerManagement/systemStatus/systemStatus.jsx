@@ -70,7 +70,7 @@ function SystemStatus({sytemData}){
                 />
                 <InfoDisplayCase 
                     title="Áp suất nước hồi:"
-                    info={GetValue("386d4d1ea30e03071cec3db1")}
+                    info={GetValue("386d4ea1a30e03071cec3db5")}
                 />
                 <InfoDisplayCase 
                     title="Nhiệt độ nước cấp:"
@@ -78,7 +78,7 @@ function SystemStatus({sytemData}){
                 />
                 <InfoDisplayCase 
                     title="Nhiệt độ nước hồi:"
-                    info={GetValue("386d4bb2a30e03071cec3dac")}
+                    info={GetValue("386d46c29340f70714423592")}
                 />
                 <InfoDisplayCase 
                     title="Chênh lệch áp suất:"
@@ -86,7 +86,7 @@ function SystemStatus({sytemData}){
                 />
                 <InfoDisplayCase 
                     title="Tần số bơm:"
-                    info={GetValue("386d50014eb911071abac777")}
+                    info={GetValue("386d5df0fadcf8071c95403a")}
                 />
                 <InfoDisplayCase 
                     title="Độ mở van:"
