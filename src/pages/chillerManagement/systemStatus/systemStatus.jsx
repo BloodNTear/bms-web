@@ -32,8 +32,8 @@ function SystemStatus({sytemData}){
         fetchData();
     },[axiosInstance])
 
-    function GetValue(unitID){
-        const targetUnit = systemData?.find(unit => unit?.unit_id === unitID);
+    function GetValue(id){
+        const targetUnit = systemData?.find(unit => unit?.id === id);
         if(targetUnit){
             return targetUnit?.point_value;
         }else{
@@ -66,19 +66,19 @@ function SystemStatus({sytemData}){
             <div className="info-display">
                 <InfoDisplayCase 
                     title="Áp suất nước cấp:"
-                    info={GetValue("386d46c29340f70714423592")}
+                    info={GetValue("386d4ccfa30e03071cec3daf")}
                 />
                 <InfoDisplayCase 
                     title="Áp suất nước hồi:"
-                    info={GetValue("386d4ea1a30e03071cec3db5")}
+                    info={GetValue("386d4d1ea30e03071cec3db1")}
                 />
                 <InfoDisplayCase 
                     title="Nhiệt độ nước cấp:"
-                    info={GetValue("386d46c29340f70714423592")}
+                    info={GetValue("386d48cda30e03071cec3da5")}
                 />
                 <InfoDisplayCase 
                     title="Nhiệt độ nước hồi:"
-                    info={GetValue("386d46c29340f70714423592")}
+                    info={GetValue("386d4bb2a30e03071cec3dac")}
                 />
                 <InfoDisplayCase 
                     title="Chênh lệch áp suất:"
@@ -86,7 +86,7 @@ function SystemStatus({sytemData}){
                 />
                 <InfoDisplayCase 
                     title="Tần số bơm:"
-                    info={GetValue("386d5df0fadcf8071c95403a")}
+                    info={GetValue("386d50014eb911071abac777")}
                 />
                 <InfoDisplayCase 
                     title="Độ mở van:"
