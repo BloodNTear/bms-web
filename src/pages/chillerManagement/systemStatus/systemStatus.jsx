@@ -41,6 +41,18 @@ function SystemStatus({sytemData}){
         }
     }
 
+    const POINT_ID = {
+        "Áp suất nước cấp": "386d4ccfa30e03071cec3daf",
+        "Áp suất nước hồi": "386d4d1ea30e03071cec3db1",
+        "Nhiệt độ nước cấp": "386d48cda30e03071cec3da5",
+        "Nhiệt độ nước hồi": "386d4bb2a30e03071cec3dac",
+        "Tần số bơm": "386d50014eb911071abac777"
+    };
+
+    function GetPressureDiff(){
+        return GetValue(POINT_ID["Áp suất nước cấp"]) - GetValue(POINT_ID["Nhiệt độ nước hồi"]);
+    }
+
     return(
         <div className="system-status-wrapper">
             <div className="title">
@@ -66,27 +78,27 @@ function SystemStatus({sytemData}){
             <div className="info-display">
                 <InfoDisplayCase 
                     title="Áp suất nước cấp:"
-                    info={GetValue("386d4ccfa30e03071cec3daf")}
+                    info={GetValue(POINT_ID["Áp suất nước cấp"])}
                 />
                 <InfoDisplayCase 
                     title="Áp suất nước hồi:"
-                    info={GetValue("386d4d1ea30e03071cec3db1")}
+                    info={GetValue(POINT_ID["Áp suất nước hồi"])}
                 />
                 <InfoDisplayCase 
                     title="Nhiệt độ nước cấp:"
-                    info={GetValue("386d48cda30e03071cec3da5")}
+                    info={GetValue(POINT_ID["Nhiệt độ nước cấp"])}
                 />
                 <InfoDisplayCase 
                     title="Nhiệt độ nước hồi:"
-                    info={GetValue("386d4bb2a30e03071cec3dac")}
+                    info={GetValue(POINT_ID["Nhiệt độ nước hồi"])}
                 />
                 <InfoDisplayCase 
                     title="Chênh lệch áp suất:"
-                    info={GetValue("")}
+                    info={GetPressureDiff()}
                 />
                 <InfoDisplayCase 
                     title="Tần số bơm:"
-                    info={GetValue("386d50014eb911071abac777")}
+                    info={GetValue(POINT_ID["Tần số bơm"])}
                 />
                 <InfoDisplayCase 
                     title="Độ mở van:"
