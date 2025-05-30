@@ -50,7 +50,7 @@ function SystemStatus({sytemData}){
     };
 
     function GetPressureDiff(){
-        return GetValue(POINT_ID["Áp suất nước cấp"]) - GetValue(POINT_ID["Nhiệt độ nước hồi"]);
+        return GetValue(POINT_ID["Áp suất nước cấp"]) - GetValue(POINT_ID["Áp suất nước hồi"]);
     }
 
     return(
