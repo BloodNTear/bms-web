@@ -35,6 +35,17 @@ function ManualControl({currentManualData, onSubmit}){
                     value={manualData.pump}
                     onChange={handleInput}
                 />
+                {
+                    manualData.pump && (
+                        <InputButton 
+                            title={"PUMP State"}
+                            field={"pumpState"}
+                            value={manualData.pumpState}
+                            onChange={handleInput}
+                            useStartStop={true}
+                        />
+                    )
+                }
                 <InputButton 
                     title={"COMP"}
                     field={"comp"}
@@ -47,18 +58,6 @@ function ManualControl({currentManualData, onSubmit}){
                     title={"Tần số cài (Hz)"}
                     field="frequency"
                     value={manualData.frequency}
-                    onChange={handleInput}
-                />
-                <InputCase 
-                    title={"Thời gian khởi động"}
-                    field="frequency"
-                    value={manualData.bootTime}
-                    onChange={handleInput}
-                />
-                <InputCase 
-                    title={"Thời gian dừng"}
-                    field="frequency"
-                    value={manualData.stopTime}
                     onChange={handleInput}
                 />
             </div>

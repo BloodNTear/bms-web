@@ -1,6 +1,6 @@
 import './chillerManagement.css';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { SystemStatus } from './systemStatus';
 import { AutoControl } from './AutoControl';
@@ -17,15 +17,27 @@ function ChillerManagement(){
             },
             manualControl: {
                 pump: false,
+                pumpState: false,
                 comp: false,
                 frequency: 0,
-                bootTime: 0,
-                stopTime: 0
+                
             }
         };
 
         return initialState;
     });
+
+    useEffect(() => {
+        if(!globalState.manualControl.pump){
+            setGlobalState((prev) => ({
+                ...prev,
+                manualControl:{
+                    ...prev.manualControl,
+                    pumpState: false
+                }
+            }));
+        }
+    },[globalState.manualControl.pump]);
 
     //#region Control Mode
     //True for auto, false for manual
