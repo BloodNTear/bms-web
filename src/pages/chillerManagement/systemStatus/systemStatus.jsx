@@ -2,8 +2,8 @@ import './systemStatus.css';
 
 import { useState, useEffect } from 'react';
 
-import {useAxiosWithAuth} from '../../../api/useAxiosWithAuth';
-import {InfoDisplayCase} from './InfoDisplayCase';
+import { useAxiosWithAuth } from '../../../api/useAxiosWithAuth';
+import { InfoDisplayCase } from './InfoDisplayCase';
 import { mockData } from '../../../mocks/mockData';
 
 function SystemStatus({sytemData}){

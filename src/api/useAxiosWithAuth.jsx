@@ -6,7 +6,6 @@ import { useLoading } from '../utilities/loadingContext';
 
 const axiosInstance = axios.create({
     baseURL: '/api',
-    //baseURL: 'https://knkhomeservice.azurewebsites.net/',
     timeout: 20000
 });
 
