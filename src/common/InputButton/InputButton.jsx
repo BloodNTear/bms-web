@@ -17,7 +17,7 @@ function InputButton({title, field, value, onChange, useStartStop = false}){
     return (
         <div className="input-button">
             <label><b>{title}</b></label>   
-            <div className={`value-input ${(useStartStop ? !value : value) ? "on" : ""}`}
+            <div className={`value-input ${value  ? "on" : ""}`}
                 onClick={handleInput}
             >
                 <h3>{GetValue()}</h3>
