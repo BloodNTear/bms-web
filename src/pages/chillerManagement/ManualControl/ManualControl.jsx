@@ -60,6 +60,12 @@ function ManualControl({currentManualData, onSubmit}){
                     value={manualData.frequency}
                     onChange={handleInput}
                 />
+                <InputCase 
+                    title={"Độ mở van (%)"}
+                    field="valvePercentage"
+                    value={manualData.valvePercentage}
+                    onChange={handleInput}
+                />
             </div>
         </div>
     );

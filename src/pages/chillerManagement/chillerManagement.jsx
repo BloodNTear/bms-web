@@ -11,16 +11,14 @@ function ChillerManagement(){
     const [globalState, setGlobalState] = useState(() => {
         const initialState = {
             autoControl: {
-                valvePercentage: 0,
                 volumePressure: 0,
-                minFrequency: 0
             },
             manualControl: {
+                valvePercentage: 0,
                 pump: false,
                 pumpState: false,
                 comp: false,
                 frequency: 0,
-                
             }
         };
 

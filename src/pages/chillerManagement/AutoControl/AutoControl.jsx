@@ -3,6 +3,7 @@ import './AutoControl.css';
 import { useState } from 'react';
 
 import { InputCase } from '../../../common/InputCase';
+import { DisplayCase } from '../../../common/DisplayCase';
 
 function AutoControl({currentAutoData, onSubmit}){
     
@@ -29,22 +30,14 @@ function AutoControl({currentAutoData, onSubmit}){
             </div>
             <div className="statistic-inputs">
                 <InputCase 
-                    title={"Van mở (%)"}
-                    field="valvePercentage"
-                    value={autoData.valvePercentage}
-                    onChange={handleInput}
-                />
-                <InputCase 
                     title={"Chỉnh lưu lượng áp (bar)"}
                     field="volumePressure"
                     value={autoData.volumePressure}
                     onChange={handleInput}
                 />
-                <InputCase 
+                <DisplayCase
                     title={"Tần số bơm min"}
-                    field="minFrequency"
-                    value={autoData.minFrequency}
-                    onChange={handleInput}
+                    value={25}
                 />
             </div>
         </div>

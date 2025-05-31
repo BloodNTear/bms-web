@@ -40,7 +40,9 @@ function SystemStatus({currentState, currentMode, onOff, onManual, onAuto}){
         onManual && onManual();
     }
     function handleTurnAuto(){
-        if(currentState.manualControl.pump && currentState.manualControl.comp){
+        if(currentState.manualControl.pump &&
+             currentState.manualControl.comp &&
+              currentState.manualControl.pumpState){
             onAuto && onAuto();
         }else{
             alert("PUMP and COMP in Manual Control MUST be ON to use Auto <!>");
