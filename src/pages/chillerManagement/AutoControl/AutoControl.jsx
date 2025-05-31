@@ -37,7 +37,7 @@ function AutoControl({currentAutoData, onSubmit}){
                 />
                 <DisplayCase
                     title={"Tần số bơm min"}
-                    value={25}
+                    value={"25 (Hz)"}
                 />
             </div>
         </div>
