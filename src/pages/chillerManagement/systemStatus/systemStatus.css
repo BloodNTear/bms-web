@@ -41,6 +41,18 @@
     cursor: pointer;
 }
 
+.system-status-wrapper .control-buttons .control-button.off{
+    background-color: rgba(255, 0, 0, 0.5);
+}
+
+.system-status-wrapper .control-buttons .control-button.manual{
+    background-color: rgba(255, 234, 0, 0.5);
+}
+
+.system-status-wrapper .control-buttons .control-button.auto{
+    background-color: rgba(0, 255, 8, 0.5);
+}
+
 .system-status-wrapper .info-display{
     width: 100%;
     height: 70%;

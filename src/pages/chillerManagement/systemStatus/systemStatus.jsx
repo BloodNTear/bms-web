@@ -6,7 +6,7 @@ import { useAxiosWithAuth } from '../../../api/useAxiosWithAuth';
 import { InfoDisplayCase } from './InfoDisplayCase';
 import { mockData } from '../../../mocks/mockData';
 
-function SystemStatus({sytemData}){
+function SystemStatus({currentState, currentMode, onOff, onManual, onAuto}){
 
     const axiosInstance = useAxiosWithAuth();
 
@@ -30,8 +30,25 @@ function SystemStatus({sytemData}){
 
         };
         fetchData();
-    },[axiosInstance])
+    },[axiosInstance]);
 
+    //#region Parent-passed functions
+    function handleTurnOff(){
+        onOff && onOff();
+    }
+    function handleTurnManual(){
+        onManual && onManual();
+    }
+    function handleTurnAuto(){
+        if(currentState.manualControl.pump && currentState.manualControl.comp){
+            onAuto && onAuto();
+        }else{
+            alert("PUMP and COMP in Manual Control MUST be ON to use Auto <!>");
+        }
+    }
+    //#endregion
+
+    //#region UI Helper Functions
     function GetValue(id){
         const targetUnit = systemData?.find(unit => unit?.id === id);
         if(targetUnit){
@@ -52,6 +69,7 @@ function SystemStatus({sytemData}){
     function GetPressureDiff(){
         return GetValue(POINT_ID["Áp suất nước cấp"]) - GetValue(POINT_ID["Áp suất nước hồi"]);
     }
+    //#endregion
 
     return(
         <div className="system-status-wrapper">
@@ -59,22 +77,23 @@ function SystemStatus({sytemData}){
                 <h2>Hệ thống</h2>
             </div>
             <div className="control-buttons">
-                <div className="control-button"
-                     style={{backgroundColor: 'rgba(255, 0, 0, 0.5)'}}
+                <div className={`control-button ${currentMode === "off" ? "off" : ""}`}
+                     onClick={handleTurnOff}
                 >
                     <h3>OFF</h3>
                 </div>
-                <div className="control-button"
-                    style={{backgroundColor: 'rgba(255, 234, 0, 0.5)'}}
+                <div className={`control-button ${currentMode === "manual" ? "manual" : ""}`}
+                    onClick={handleTurnManual}
                 >
                     <h3>MAN</h3>
                 </div>
-                <div className="control-button"
-                    style={{backgroundColor: 'rgba(0, 255, 8, 0.5)'}}
+                <div className={`control-button ${currentMode === "auto" ? "auto" : ""}`}
+                    onClick={handleTurnAuto}
                 >
                     <h3>AUTO</h3>
                 </div>
             </div>
+
             <div className="info-display">
                 <InfoDisplayCase 
                     title="Áp suất nước cấp:"
