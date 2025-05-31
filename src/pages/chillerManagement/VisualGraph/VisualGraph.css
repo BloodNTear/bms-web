@@ -1,0 +1,11 @@
+.image-container {
+    padding: 10px;
+    
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.image-container img{
+    width: 100%;
+    height: 100%;
+}

@@ -11,9 +11,16 @@ function ManualControl({currentManualData, onSubmit}){
    
     function handleInput(field, value){
         setManualData((prev) => ({
-            ...prev,
-            [field]: value
+                ...prev,
+                [field]: value
         }));
+
+        if(field === "pump" && !value){
+            setManualData((prev) => ({
+                ...prev,
+                pumpState: false
+            }));
+        }
     };
 
     function handleSubmit(){

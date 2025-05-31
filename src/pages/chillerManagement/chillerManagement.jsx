@@ -3,6 +3,7 @@ import './chillerManagement.css';
 import { useEffect, useState } from 'react';
 
 import { SystemStatus } from './systemStatus';
+import { VisualGraph } from './VisualGraph';
 import { AutoControl } from './AutoControl';
 import { ManualControl } from './ManualControl';
 
@@ -24,18 +25,6 @@ function ChillerManagement(){
 
         return initialState;
     });
-
-    useEffect(() => {
-        if(!globalState.manualControl.pump){
-            setGlobalState((prev) => ({
-                ...prev,
-                manualControl:{
-                    ...prev.manualControl,
-                    pumpState: false
-                }
-            }));
-        }
-    },[globalState.manualControl.pump]);
 
     //#region Control Mode
     //True for auto, false for manual
@@ -71,6 +60,7 @@ function ChillerManagement(){
             manualControl: {
                 ...prev.manualControl,
                 pump: false,
+                pumpState: false,
                 comp: false,
             }
         }));
@@ -119,16 +109,18 @@ function ChillerManagement(){
                 </div>
                 <div className="image-and-inputs">
 
-                    <div className="image-container">
-
-                    </div>
+                    <VisualGraph 
+                        pumpState={globalState.manualControl.pumpState}
+                        compState={globalState.manualControl.comp}
+                        valveState={globalState.manualControl.valvePercentage}
+                    />
 
                     {GetControlElement()}
 
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default ChillerManagement;

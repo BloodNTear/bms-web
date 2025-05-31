@@ -1,0 +1,32 @@
+.water-pipe {
+  stroke: #00bfff;
+  stroke-linecap: round;
+  stroke-dasharray: 10 10; /* [dash length] [gap] for seamless repeat */
+  stroke-dashoffset: 0;
+}
+
+@keyframes pipe-flow-forward {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -20; /* Must match total dash pattern length (10+10) */
+  }
+}
+
+@keyframes pipe-flow-reverse {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: 20;
+  }
+}
+
+.water-pipe {
+  stroke: #00bfff;
+  stroke-linecap: round;
+  stroke-dasharray: 10 10;
+  stroke-dashoffset: 0;
+  filter: drop-shadow(0 0 4px #00bfff);
+}
