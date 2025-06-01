@@ -57,7 +57,7 @@ function AutoControl({currentAutoData, triggerReload}){
         }
 
         ChangePumpFreq("pumpFreq", 25);
-    },[axiosInstance, triggerReload]);
+    },[]);
 
     return (
         <div className="control-wrapper"
