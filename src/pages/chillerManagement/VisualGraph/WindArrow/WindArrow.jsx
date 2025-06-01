@@ -21,8 +21,8 @@ function WindArrow({ flowState = false, speed = 1, startPoint, endPoint }) {
 
   return (
     <svg
-      viewBox="0 0 1000 750"
-      width="1000"
+      viewBox="0 0 2000 750"
+      width="2000"
       height="750"
       style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }}
     >
