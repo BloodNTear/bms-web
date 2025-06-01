@@ -1,6 +1,6 @@
 import './VisualGraph.css';
 
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 import GraphIMG from '../../../assets/graph-image.PNG';
 import WaterPipe from './WaterPipe/WaterPipe';
@@ -32,26 +32,45 @@ function VisualGraph({ pumpState, valveState, compState }) {
      }
   };
 
+  const imgRef = useRef(null);
+  const [size, setSize] = useState({ width: 1000, height: 750 });
+
+  useEffect(() => {
+    if (imgRef.current) {
+      const updateSize = () => {
+        const { width, height } = imgRef.current.getBoundingClientRect();
+        setSize({ width, height });
+      };
+      updateSize();
+      window.addEventListener('resize', updateSize);
+      return () => window.removeEventListener('resize', updateSize);
+    }
+  }, []);
+
   return (
     <div className="image-container" style={{ position: 'relative' }}>
-      <img src={GraphIMG} alt="Visual Graph" />
+      <img
+        ref={imgRef}
+        src={GraphIMG}
+        alt="Visual Graph"
+        style={{ width: '100%', height: 'auto', display: 'block' }}
+      />
 
       <svg
         ref={svgRef}
         viewBox="0 0 1000 750"
-        width="1000"
-        height="750"
+        width={size.width}
+        height={size.height}
         style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'auto', cursor: 'crosshair' }}
         onClick={handleSvgClick}
       >
-
         {/* Entrance To Pump */}
         <WaterPipe
           flowState={pumpState}
           flowDirection={true}
           speed={3}
-          startPoint={[603, 269]}
-          endPoint={[581, 269]}
+          startPoint={[844, 601]}
+          endPoint={[793, 601]}
         />
 
         {/* Pump to By pass Valve */}
@@ -59,8 +78,8 @@ function VisualGraph({ pumpState, valveState, compState }) {
           flowState={pumpState}
           flowDirection={true}
           speed={3}
-          startPoint={[500, 269]}
-          endPoint={[289, 269]}
+          startPoint={[627, 601]}
+          endPoint={[152, 601]}
         />
 
         {/* By Pass Valve To Chiller */}
@@ -68,8 +87,8 @@ function VisualGraph({ pumpState, valveState, compState }) {
           flowState={pumpState}
           flowDirection={true}
           speed={4 - GetValveSpeed()}
-          startPoint={[289, 269]}
-          endPoint={[105, 269]}
+          startPoint={[152, 601]}
+          endPoint={[-256, 601]}
         />
 
         {/* Chiller To By Pass Valve */}
@@ -77,8 +96,8 @@ function VisualGraph({ pumpState, valveState, compState }) {
           flowState={pumpState}
           flowDirection={true}
           speed={4 - GetValveSpeed()}
-          startPoint={[105, 202]}
-          endPoint={[289, 202]}
+          startPoint={[-256, 451]}
+          endPoint={[152, 451]}
         />
 
         {/* By Pass Valve To Return */}
@@ -86,8 +105,8 @@ function VisualGraph({ pumpState, valveState, compState }) {
           flowState={pumpState}
           flowDirection={true}
           speed={3}
-          startPoint={[289, 202]}
-          endPoint={[601, 202]}
+          startPoint={[152, 451]}
+          endPoint={[844, 451]}
         />
 
         {/* Through By Pass Valve */}
@@ -95,8 +114,8 @@ function VisualGraph({ pumpState, valveState, compState }) {
           flowState={pumpState && valveState > 0}
           flowDirection={true}
           speed={GetValveSpeed()}
-          startPoint={[290, 269]}
-          endPoint={[290, 202]}
+          startPoint={[152, 601]}
+          endPoint={[152, 451]}
         />
 
         {/* Visualize Comp Wind */}
