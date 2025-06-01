@@ -47,10 +47,8 @@ function ChillerManagement(){
             const compOn = GetPropValue(responseData, POINT_ID["On Off Comp"], "point_value");
             const pumpFreq = GetPropValue(responseData, POINT_ID["Tần số bơm"], "point_value");
 
-            const newGlobalState = {
-                autoControl: {
-                    volumePressure: 0,
-                },
+            setGlobalState((prev) => ({
+                ...prev,
                 manualControl: {
                     valvePercentage: valveOpen || 0,
                     pump: pumpOn === 1,
@@ -59,9 +57,7 @@ function ChillerManagement(){
                     frequency: pumpFreq || 0,
                 },
                 pointerData: responseData
-            };
-
-            setGlobalState(newGlobalState);
+            }));
         };
 
         function GetPropValue(objectArray, id, propName){

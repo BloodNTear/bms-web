@@ -49,6 +49,17 @@ function SystemStatus({currentState, currentMode, onOff, onManual, onAuto}){
     };
     //#endregion
 
+    //#region Alert
+    const deltaP = GetPressureDiff() - currentState?.autoControl?.volumePressure;
+    const alertLevel = deltaP / 0.5 * 10;
+
+    useEffect(() => {
+        if(alertLevel >= 10){
+            alert("Warning, the pressure is skyrocketing, we're gonna have a whole new Chernobyl right here soon <!>");
+        }
+    },[alertLevel]);
+    //#endregion
+
     return(
         <div className="system-status-wrapper">
             <div className="title">
@@ -100,6 +111,10 @@ function SystemStatus({currentState, currentMode, onOff, onManual, onAuto}){
                 <InfoDisplayCase 
                     title="Độ mở van:"
                     info={GetValue("")}
+                />
+                <InfoDisplayCase 
+                    title="Cấp độ cảnh báo:"
+                    info={alertLevel}
                 />
             </div>
         </div>
