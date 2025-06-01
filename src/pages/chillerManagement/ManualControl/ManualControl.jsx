@@ -176,7 +176,7 @@ function ManualControl({currentManualData, triggerReload}){
                 excerpt: "4|HR|612|0|W",
                 description: "",
                 thumbnail: "",
-                point_value: "60",
+                point_value: value,
                 calib: "0",
                 point_value_type: "VALUE",
                 default_value: "0",
