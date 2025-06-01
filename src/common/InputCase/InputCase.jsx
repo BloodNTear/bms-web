@@ -12,10 +12,6 @@ function InputCase({title, field, value, onSubmit}){
         setInputValue(newValue);
     }
 
-    useEffect(() => {
-        setInputValue(value);
-    },[value]);
-
     function handleBlur(){
         onSubmit && onSubmit(field, inputValue);
     }
