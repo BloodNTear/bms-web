@@ -1,29 +1,21 @@
 import './AutoControl.css';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { InputCase } from '../../../common/InputCase';
 import { DisplayCase } from '../../../common/DisplayCase';
 
-function AutoControl({currentAutoData, onSubmit}){
+function AutoControl({currentAutoData, triggerReload}){
     
-    const [autoData, setAutoData] = useState(currentAutoData);
-
-    function handleInput(field, value){
-        setAutoData((prev) => ({
-            ...prev,
-            [field]: value
-        }));
-    };
+    const [autoData, setAutoData] = useState(() =>{
+        return currentAutoData;
+    });
+    useEffect(() => {
+        setAutoData(currentAutoData);
+    },[currentAutoData]);
     
-    function handleSubmit(){
-        onSubmit && onSubmit(autoData);
-    }
-
     return (
         <div className="control-wrapper"
-             tabIndex={0}
-             onBlur={handleSubmit}
         >
             <div className="control-title">
                 <h2>Auto Control</h2>
@@ -33,7 +25,6 @@ function AutoControl({currentAutoData, onSubmit}){
                     title={"Chỉnh lưu lượng áp (bar)"}
                     field="volumePressure"
                     value={autoData.volumePressure}
-                    onChange={handleInput}
                 />
                 <DisplayCase
                     title={"Tần số bơm min"}

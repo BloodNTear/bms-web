@@ -2,13 +2,20 @@ import './chillerManagement.css';
 
 import { useEffect, useState } from 'react';
 
+import { useAxiosWithAuth } from '../../api/useAxiosWithAuth';
+
 import { SystemStatus } from './systemStatus';
 import { VisualGraph } from './VisualGraph';
 import { AutoControl } from './AutoControl';
 import { ManualControl } from './ManualControl';
 
+import { POINT_ID } from '../../mocks/PointIDs';
+
 function ChillerManagement(){
 
+    const axiosInstance = useAxiosWithAuth();
+
+    //#region Get API Info 
     const [globalState, setGlobalState] = useState(() => {
         const initialState = {
             autoControl: {
@@ -20,11 +27,70 @@ function ChillerManagement(){
                 pumpState: false,
                 comp: false,
                 frequency: 0,
-            }
+            },
+            pointerData: []
         };
 
         return initialState;
     });
+
+    const [reloadKey, setReloadKey] = useState(0);
+    function callReload(){
+        setReloadKey((prev) => (prev + 1));
+    };
+
+    useEffect(() => {
+        function SetNewGlobalState(responseData){
+            const valveOpen = GetPropValue(responseData, POINT_ID["Độ mở van"], "point_value");
+            const pumpOn = GetPropValue(responseData, POINT_ID["On Off Pump"], "point_value");
+            const pumpStart = GetPropValue(responseData, POINT_ID["Start Stop Pump"], "point_value");
+            const compOn = GetPropValue(responseData, POINT_ID["On Off Comp"], "point_value");
+            const pumpFreq = GetPropValue(responseData, POINT_ID["Tần số bơm"], "point_value");
+
+            const newGlobalState = {
+                autoControl: {
+                    volumePressure: 0,
+                },
+                manualControl: {
+                    valvePercentage: valveOpen || 0,
+                    pump: pumpOn === 1,
+                    pumpState: pumpStart === 1,
+                    comp: compOn === 1,
+                    frequency: pumpFreq || 0,
+                },
+                pointerData: responseData
+            };
+
+            setGlobalState(newGlobalState);
+        };
+
+        function GetPropValue(objectArray, id, propName){
+            const target = objectArray.find(o => o.id === id);
+            if(target){
+                return target[propName];
+            }else{
+                return undefined;
+            }
+        };
+
+        async function fetchData(){
+            const GET_URL = "points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
+            try{
+                const response  = await axiosInstance.get(GET_URL);
+                if(response?.data){
+                    SetNewGlobalState(response?.data?.data);
+                }else{
+                    console.error("Error <!>");
+                }
+            }catch(err){
+                console.error(err);
+            }
+
+        };
+        fetchData();
+    },[axiosInstance, reloadKey]);
+
+    //#endregion
 
     //#region Control Mode
     //True for auto, false for manual
@@ -35,14 +101,14 @@ function ChillerManagement(){
             case "auto": return (
                 <AutoControl 
                     currentAutoData={globalState.autoControl}
-                    onSubmit={handleAutoStateChange}
+                    triggerReload={callReload}
                 />
             );
 
             case "manual": return (
                 <ManualControl
                     currentManualData={globalState.manualControl} 
-                    onSubmit={handleManualStateChange}
+                    triggerReload={callReload}
                 />
             );
 

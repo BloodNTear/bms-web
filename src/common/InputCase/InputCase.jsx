@@ -1,11 +1,23 @@
 import './InputCase.css';
 
+import { useState, useEffect } from 'react';
 
-
-function InputCase({title, field, value, onChange}){
+function InputCase({title, field, value, onSubmit}){
     
-    function handleInput(inputValue){
-        onChange && onChange(field, inputValue);
+    const [inputValue, setInputValue] = useState(() => {
+        return value
+    });
+
+    function handleValueChange(newValue){
+        setInputValue(newValue);
+    }
+
+    useEffect(() => {
+        setInputValue(value);
+    },[value]);
+
+    function handleBlur(){
+        onSubmit && onSubmit(field, inputValue);
     }
 
     return(
@@ -14,7 +26,8 @@ function InputCase({title, field, value, onChange}){
             <input 
                 type='number'
                 value={value}
-                onChange={(e) => handleInput(e.target.value)}
+                onChange={(e) => handleValueChange(e.target.value)}
+                onBlur={handleBlur}
             />
         </div>
     )
