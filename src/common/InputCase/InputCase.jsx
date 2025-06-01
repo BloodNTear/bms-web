@@ -8,6 +8,10 @@ function InputCase({title, field, value, onSubmit}){
         return value
     });
 
+    useEffect(() => {
+        setInputValue(value);
+    },[value])
+
     function handleValueChange(newValue){
         setInputValue(newValue);
     }
@@ -21,7 +25,7 @@ function InputCase({title, field, value, onSubmit}){
             <label>{title}</label>
             <input 
                 type='number'
-                value={value}
+                value={inputValue}
                 onChange={(e) => handleValueChange(e.target.value)}
                 onBlur={handleBlur}
             />
