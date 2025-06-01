@@ -50,11 +50,11 @@ function ChillerManagement(){
             setGlobalState((prev) => ({
                 ...prev,
                 manualControl: {
-                    valvePercentage: valveOpen || 0,
-                    pump: pumpOn === 1,
-                    pumpState: pumpStart === 1,
-                    comp: compOn === 1,
-                    frequency: pumpFreq || 0,
+                    valvePercentage: Number(valveOpen) || 0,
+                    pump: Number(pumpOn) === 1,
+                    pumpState: Number(pumpStart) === 1,
+                    comp: Number(compOn) === 1,
+                    frequency: Number(pumpFreq) || 0,
                 },
                 pointerData: responseData
             }));
