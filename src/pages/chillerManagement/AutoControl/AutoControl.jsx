@@ -7,13 +7,14 @@ import { DisplayCase } from '../../../common/DisplayCase';
 
 import { useAxiosWithAuth } from '../../../api/useAxiosWithAuth';
 
-function AutoControl({currentAutoData, triggerReload}){
+function AutoControl({currentAutoData, onDataSubmit, triggerReload}){
     
     const axiosInstance = useAxiosWithAuth();
 
     const [autoData, setAutoData] = useState(() =>{
         return currentAutoData;
     });
+
     useEffect(() => {
         setAutoData(currentAutoData);
     },[currentAutoData]);
@@ -70,11 +71,13 @@ function AutoControl({currentAutoData, triggerReload}){
                     title={"Chỉnh lưu lượng áp (bar)"}
                     field="volumePressure"
                     value={autoData.volumePressure}
+                    onSubmit={onDataSubmit}
                 />
                 <InputCase 
                     title={"Nhiệt độ nước cấp tối thiểu"}
                     field="minInputWaterTemp"
                     value={autoData.minInputWaterTemp}
+                    onSubmit={onDataSubmit}
                 />
                 <DisplayCase
                     title={"Tần số bơm min"}

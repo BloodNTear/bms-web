@@ -155,6 +155,7 @@ function ChillerManagement(){
             case "auto": return (
                 <AutoControl 
                     currentAutoData={globalState.autoControl}
+                    onDataSubmit={handleAutoDataSubmit}
                     triggerReload={callReload}
                 />
             );
@@ -209,6 +210,20 @@ function ChillerManagement(){
             autoControl: autoStateData
         }));
     }
+    //#endregion
+
+    //#region Handle Auto Data Submit
+
+    function handleAutoDataSubmit(field, value){
+        setGlobalState((prev) => ({
+            ...prev,
+            autoControl: {
+                ...prev.autoControl,
+                [field]: value
+            }
+        }));
+    }
+
     //#endregion
 
     return(
