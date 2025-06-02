@@ -2,12 +2,15 @@ import './AutoControl.css';
 
 import { useEffect, useState } from 'react';
 
-import { InputCase } from '../../../common/InputCase';
-import { DisplayCase } from '../../../common/DisplayCase';
-
 import { useAxiosWithAuth } from '../../../api/useAxiosWithAuth';
 
-function AutoControl({currentAutoData, onDataSubmit, triggerReload}){
+import { InputCase } from '../../../common/InputCase';
+import { InputButton } from '../../../common/InputButton';
+import { DisplayCase } from '../../../common/DisplayCase';
+
+function AutoControl({currentAutoData, currentManualData,
+    onDataSubmit, triggerReload
+}){
     
     const axiosInstance = useAxiosWithAuth();
 
@@ -18,7 +21,12 @@ function AutoControl({currentAutoData, onDataSubmit, triggerReload}){
     useEffect(() => {
         setAutoData(currentAutoData);
     },[currentAutoData]);
-    
+
+    const [manualData, setManualData] = useState(currentManualData);
+    useEffect(() => {
+        setManualData(currentManualData);
+    }, [currentManualData]);
+
     useEffect(() => {
         async function ChangePumpFreq(field, value) {
             const API_ENDPOINT = "points/save";
@@ -57,7 +65,7 @@ function AutoControl({currentAutoData, onDataSubmit, triggerReload}){
             }
         }
 
-        ChangePumpFreq("pumpFreq", 25);
+        ChangePumpFreq("pumpFreq", 70);
     },[]);
 
     return (
@@ -65,6 +73,28 @@ function AutoControl({currentAutoData, onDataSubmit, triggerReload}){
         >
             <div className="control-title">
                 <h2>Auto Control</h2>
+            </div>
+             <div className="input-buttons">
+                <InputButton 
+                    title={"PUMP"}
+                    field={"pump"}
+                    value={manualData.pump}
+                />
+                {
+                    manualData.pump && (
+                        <InputButton 
+                            title={"PUMP State"}
+                            field={"pumpState"}
+                            value={manualData.pumpState}
+                            useStartStop={true}
+                        />
+                    )
+                }
+                <InputButton 
+                    title={"COMP"}
+                    field={"comp"}
+                    value={manualData.comp}
+                />
             </div>
             <div className="statistic-inputs">
                 <InputCase 
@@ -81,7 +111,7 @@ function AutoControl({currentAutoData, onDataSubmit, triggerReload}){
                 />
                 <DisplayCase
                     title={"Tần số bơm min"}
-                    value={"25 (Hz)"}
+                    value={"35 (Hz)"}
                 />
             </div>
         </div>

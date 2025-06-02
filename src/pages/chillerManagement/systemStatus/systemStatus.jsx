@@ -110,10 +110,6 @@ function SystemStatus({currentState, currentMode, onOff, onManual, onAuto}){
                 />
                 <InfoDisplayCase 
                     title="Độ mở van:"
-                    info={GetValue(POINT_ID["Độ mở van"])}
-                />
-                <InfoDisplayCase 
-                    title="Cấp độ cảnh báo:"
                     info={alertLevel}
                 />
             </div>

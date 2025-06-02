@@ -89,61 +89,6 @@ function ChillerManagement(){
         fetchData();
     },[axiosInstance, reloadKey]);
 
-    // For silent refresh
-    const refreshRate = 15;
-    useEffect(() => {
-
-        function SetNewGlobalState(responseData){
-            const valveOpen = GetPropValue(responseData, POINT_ID["Độ mở van"], "point_value");
-            const pumpOn = GetPropValue(responseData, POINT_ID["On Off Pump"], "point_value");
-            const pumpStart = GetPropValue(responseData, POINT_ID["Start Stop Pump"], "point_value");
-            const compOn = GetPropValue(responseData, POINT_ID["On Off Comp"], "point_value");
-            const pumpFreq = GetPropValue(responseData, POINT_ID["Tần số bơm"], "point_value");
-
-            setGlobalState((prev) => ({
-                ...prev,
-                manualControl: {
-                    valvePercentage: Number(valveOpen) || 0,
-                    pump: Number(pumpOn) === 1,
-                    pumpState: Number(pumpStart) === 1,
-                    comp: Number(compOn) === 1,
-                    frequency: Number(pumpFreq) || 0,
-                },
-                pointerData: responseData
-            }));
-        };
-
-        function GetPropValue(objectArray, id, propName){
-            const target = objectArray.find(o => o.id === id);
-            if(target){
-                return target[propName];
-            }else{
-                return undefined;
-            }
-        };
-
-        async function fetchData(){
-            const GET_URL = "points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
-            try{
-                const response  = await silentAxiosInstance.get(GET_URL);
-                if(response?.data){
-                    SetNewGlobalState(response?.data?.data);
-                }else{
-                    console.error("Error <!>");
-                }
-            }catch(err){
-                console.error(err);
-            }
-
-        };
-
-        const interval = setInterval(async () => {
-            fetchData();
-        }, refreshRate * 1000);
-        return () => clearInterval(interval);
-        
-    }, [silentAxiosInstance]);
-
     //#endregion
 
     //#region Control Mode
@@ -155,6 +100,7 @@ function ChillerManagement(){
             case "auto": return (
                 <AutoControl 
                     currentAutoData={globalState.autoControl}
+                    currentManualData={globalState.manualControl}
                     onDataSubmit={handleAutoDataSubmit}
                     triggerReload={callReload}
                 />
@@ -224,6 +170,67 @@ function ChillerManagement(){
         }));
     }
 
+    //#endregion
+
+    //#region Silent reload and Auto Control
+    const refreshRate = 15;
+    useEffect(() => {
+
+        function SetNewGlobalState(responseData){
+            const valveOpen = GetPropValue(responseData, POINT_ID["Độ mở van"], "point_value");
+            const pumpOn = GetPropValue(responseData, POINT_ID["On Off Pump"], "point_value");
+            const pumpStart = GetPropValue(responseData, POINT_ID["Start Stop Pump"], "point_value");
+            const compOn = GetPropValue(responseData, POINT_ID["On Off Comp"], "point_value");
+            const pumpFreq = GetPropValue(responseData, POINT_ID["Tần số bơm"], "point_value");
+
+            setGlobalState((prev) => ({
+                ...prev,
+                manualControl: {
+                    valvePercentage: Number(valveOpen) || 0,
+                    pump: Number(pumpOn) === 1,
+                    pumpState: Number(pumpStart) === 1,
+                    comp: Number(compOn) === 1,
+                    frequency: Number(pumpFreq) || 0,
+                },
+                pointerData: responseData
+            }));
+        };
+
+        function GetPropValue(objectArray, id, propName){
+            const target = objectArray.find(o => o.id === id);
+            if(target){
+                return target[propName];
+            }else{
+                return undefined;
+            }
+        };
+
+        async function fetchData(){
+            const GET_URL = "points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
+            try{
+                const response  = await silentAxiosInstance.get(GET_URL);
+                if(response?.data){
+                    SetNewGlobalState(response?.data?.data);
+                }else{
+                    console.error("Error <!>");
+                }
+            }catch(err){
+                console.error(err);
+            }
+
+        };
+
+        const interval = setInterval(async () => {
+            fetchData();
+        }, refreshRate * 1000);
+        return () => clearInterval(interval);
+        
+    }, [silentAxiosInstance]);
+
+    
+    async function AdjustDevices(){
+        
+    }
     //#endregion
 
     return(
