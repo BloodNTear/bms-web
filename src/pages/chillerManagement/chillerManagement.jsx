@@ -288,7 +288,7 @@ function ChillerManagement(){
             PressCompButton("comp", false);
         }
 
-    },[globalState.autoControl.minInputWaterTemp])
+    },[globalState.autoControl.minInputWaterTemp, globalState.autoControl.currentWaterTemp])
     
     useEffect(() => {
         function GetValue(id){
