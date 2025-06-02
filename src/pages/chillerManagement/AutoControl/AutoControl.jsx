@@ -78,14 +78,14 @@ function AutoControl({currentAutoData, currentManualData,
                 <InputButton 
                     title={"PUMP"}
                     field={"pump"}
-                    value={manualData.pump}
+                    value={manualData?.pump}
                 />
                 {
                     manualData.pump && (
                         <InputButton 
                             title={"PUMP State"}
                             field={"pumpState"}
-                            value={manualData.pumpState}
+                            value={manualData?.pumpState}
                             useStartStop={true}
                         />
                     )

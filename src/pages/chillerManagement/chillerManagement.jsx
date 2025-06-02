@@ -173,7 +173,7 @@ function ChillerManagement(){
     //#endregion
 
     //#region Silent reload and Auto Control
-    const refreshRate = 15;
+    const refreshRate = 0.5;
     useEffect(() => {
 
         function SetNewGlobalState(responseData){
