@@ -23,6 +23,7 @@ function ChillerManagement(){
             autoControl: {
                 volumePressure: 0,
                 minInputWaterTemp: 0,
+                currentWaterTemp: 0
             },
             manualControl: {
                 valvePercentage: 0,
@@ -49,9 +50,14 @@ function ChillerManagement(){
             const pumpStart = GetPropValue(responseData, POINT_ID["Start Stop Pump"], "point_value");
             const compOn = GetPropValue(responseData, POINT_ID["On Off Comp"], "point_value");
             const pumpFreq = GetPropValue(responseData, POINT_ID["Tần số bơm"], "point_value");
+            const waterTemp = GetPropValue(responseData, POINT_ID["Nhiệt độ nước cấp"], "point_value");
 
             setGlobalState((prev) => ({
                 ...prev,
+                autoControl: {
+                    ...prev.autoControl,
+                    currentWaterTemp: waterTemp
+                },
                 manualControl: {
                     valvePercentage: Number(valveOpen) || 0,
                     pump: Number(pumpOn) === 1,
