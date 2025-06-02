@@ -20,6 +20,7 @@ function ChillerManagement(){
         const initialState = {
             autoControl: {
                 volumePressure: 0,
+                minInputWaterTemp: 0,
             },
             manualControl: {
                 valvePercentage: 0,

@@ -71,6 +71,11 @@ function AutoControl({currentAutoData, triggerReload}){
                     field="volumePressure"
                     value={autoData.volumePressure}
                 />
+                <InputCase 
+                    title={"Nhiệt độ nước cấp tối thiểu"}
+                    field="minInputWaterTemp"
+                    value={autoData.minInputWaterTemp}
+                />
                 <DisplayCase
                     title={"Tần số bơm min"}
                     value={"25 (Hz)"}

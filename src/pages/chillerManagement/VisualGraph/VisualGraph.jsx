@@ -62,7 +62,7 @@ function VisualGraph({ pumpState, valveState, compState }) {
         width={size.width}
         height={size.height}
         style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'auto', cursor: 'crosshair' }}
-        onClick={handleSvgClick}
+        // onClick={handleSvgClick}
       >
         {/* Entrance To Pump */}
         <WaterPipe
