@@ -205,6 +205,8 @@ function ChillerManagement(){
                 },
                 pointerData: responseData
             }));
+
+            console.log("Global state refreshed");
         };
 
         function GetPropValue(objectArray, id, propName){
@@ -292,6 +294,8 @@ function ChillerManagement(){
         if(GetValue(POINT_ID["Nhiệt độ nước cấp"]) < globalState?.autoControl?.minInputWaterTemp  && globalState.manualControl.comp){
             PressCompButton("comp", false);
         }
+
+        console.log("UseEffect is triggered");
 
     },[globalState.autoControl.minInputWaterTemp, globalState.autoControl.currentWaterTemp]);
     
