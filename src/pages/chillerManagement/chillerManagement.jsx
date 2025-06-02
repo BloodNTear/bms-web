@@ -182,7 +182,10 @@ function ChillerManagement(){
     const refreshRate = 0.5;
     useEffect(() => {
 
-        function SetNewGlobalState(responseData){
+        function SilentSetNewGlobalState(responseData){
+
+            console.log("Global state refreshed");
+
             const valveOpen = GetPropValue(responseData, POINT_ID["Độ mở van"], "point_value");
             const pumpOn = GetPropValue(responseData, POINT_ID["On Off Pump"], "point_value");
             const pumpStart = GetPropValue(responseData, POINT_ID["Start Stop Pump"], "point_value");
@@ -205,8 +208,6 @@ function ChillerManagement(){
                 },
                 pointerData: responseData
             }));
-
-            console.log("Global state refreshed");
         };
 
         function GetPropValue(objectArray, id, propName){
@@ -223,7 +224,7 @@ function ChillerManagement(){
             try{
                 const response  = await silentAxiosInstance.get(GET_URL);
                 if(response?.data){
-                    SetNewGlobalState(response?.data?.data);
+                    SilentSetNewGlobalState(response?.data?.data);
                 }else{
                     console.error("Error <!>");
                 }
