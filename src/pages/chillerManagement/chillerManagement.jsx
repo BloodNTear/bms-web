@@ -184,8 +184,6 @@ function ChillerManagement(){
 
         function SilentSetNewGlobalState(responseData){
 
-            console.log("Global state refreshed");
-
             const valveOpen = GetPropValue(responseData, POINT_ID["Độ mở van"], "point_value");
             const pumpOn = GetPropValue(responseData, POINT_ID["On Off Pump"], "point_value");
             const pumpStart = GetPropValue(responseData, POINT_ID["Start Stop Pump"], "point_value");
@@ -295,8 +293,6 @@ function ChillerManagement(){
         if(GetValue(POINT_ID["Nhiệt độ nước cấp"]) < globalState?.autoControl?.minInputWaterTemp  && globalState.manualControl.comp){
             PressCompButton("comp", false);
         }
-
-        console.log("UseEffect is triggered");
 
     },[globalState.autoControl.minInputWaterTemp, globalState.autoControl.currentWaterTemp]);
     
