@@ -274,11 +274,11 @@ function ChillerManagement(){
             }
         };
 
-        if(globalState?.autoControl?.minInputWaterTemp > GetValue(POINT_ID["Nhiệt độ nước cấp"]) && !globalState.manualControl.comp){
+        if(GetValue(POINT_ID["Nhiệt độ nước cấp"]) > globalState?.autoControl?.minInputWaterTemp  && !globalState.manualControl.comp){
             PressCompButton("comp", true);
         }
 
-        if(globalState?.autoControl?.minInputWaterTemp < GetValue(POINT_ID["Nhiệt độ nước cấp"]) && globalState.manualControl.comp){
+        if(GetValue(POINT_ID["Nhiệt độ nước cấp"]) < globalState?.autoControl?.minInputWaterTemp  && globalState.manualControl.comp){
             PressCompButton("comp", false);
         }
 
