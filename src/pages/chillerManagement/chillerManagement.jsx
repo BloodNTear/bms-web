@@ -231,6 +231,66 @@ function ChillerManagement(){
     async function AdjustDevices(){
         
     }
+
+    useEffect(() => {
+        function GetValue(id){
+            const targetUnit = globalState?.pointerData?.find(unit => unit?.id === id);
+            if(targetUnit){
+                return targetUnit?.point_value;
+            }else{
+                return "Unit not found <!>";
+            }
+        };
+
+        function GetPressureDiff(){
+            return GetValue(POINT_ID["Áp suất nước cấp"]) - GetValue(POINT_ID["Áp suất nước hồi"]);
+        };
+
+        const deltaP = GetPressureDiff() - globalState?.autoControl?.volumePressure;
+        const valveLevel = (deltaP / 0.5) * 100;
+        let actualApiValue = valveLevel > 0 ? valveLevel : 0;
+        actualApiValue = actualApiValue <= 100 ? actualApiValue : 100;
+
+        async function CallSaveValveValue(field, value) {
+            const API_ENDPOINT = "points/save";
+            const api_model = {
+                slug: "van-can-bang_w",
+                excerpt: "4|HR|612|0|W",
+                description: "",
+                thumbnail: "",
+                point_value: value,
+                calib: "0",
+                point_value_type: "VALUE",
+                default_value: "0",
+                access_type: "write",
+                updated_date: "2025-06-01T03:39:59.220Z",
+                status: "active",
+                is_featured: 1,
+                created_date: 946687484581,
+                device_id: "67377d59a814500731ce2da4",
+                unit_id: "386d484531c5dd071c6fe254",
+                schedule_id: null,
+                title: "van can bang_W",
+                company_id: "5cf4eb1557a81c267803c398",
+                author_id: "5cf5013557a81c267803c3a3",
+                id: "386d4dfca30e03071cec3db3"
+            };
+
+            try {
+                const response = await axiosInstance.post(API_ENDPOINT, api_model);
+                if(response?.data?.status){
+                    callReload && callReload();
+                }else{
+                    console.error("Auto Set Valve Open: " + response?.data?.MESSAGE);
+                }
+            } catch (error) {
+                console.error(error)
+            }
+        }
+
+        CallSaveValveValue("valveOpenPercentage", actualApiValue);
+
+    },[globalState.autoControl.volumePressure]);
     //#endregion
 
     return(
