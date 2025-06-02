@@ -227,11 +227,63 @@ function ChillerManagement(){
         
     }, [silentAxiosInstance]);
 
-    
-    async function AdjustDevices(){
-        
-    }
+    useEffect(() => {
+        async function PressCompButton(field, value) {
+            const API_ENDPOINT = "points/save";
+            const api_model = {
+                slug: "onoff-may-nen",
+                excerpt: "4|HR|348|0|W",
+                description: "Override Value DO 01",
+                thumbnail: "",
+                point_value: value ? 1 : 0,
+                calib: "0",
+                point_value_type: "0",
+                default_value: "0",
+                access_type: "write",
+                updated_date: "2025-05-29T10:29:07.737Z",
+                status: "active",
+                is_featured: 1,
+                created_date: 946686541377,
+                device_id: "67377d59a814500731ce2da4",
+                unit_id: "670e351354eba1071f4d2b53",
+                schedule_id: null,
+                title: "on/off may nen",
+                company_id: "5cf4eb1557a81c267803c398",
+                author_id: "5cf5013557a81c267803c3a3",
+                id: "386d4a4d31c5dd071c6fe259"
+            };
 
+                try {
+                    const response = await axiosInstance.post(API_ENDPOINT, api_model);
+                    if(response?.data?.status){
+                        callReload && callReload();
+                    }else{
+                        console.error("Set Pump Start Stop: " + response?.data?.MESSAGE);
+                    }
+                } catch (error) {
+                    console.error(error)
+                }
+        }
+
+        function GetValue(id){
+            const targetUnit = globalState?.pointerData?.find(unit => unit?.id === id);
+            if(targetUnit){
+                return targetUnit?.point_value;
+            }else{
+                return "Unit not found <!>";
+            }
+        };
+
+        if(globalState?.autoControl?.minInputWaterTemp > GetValue(POINT_ID["Nhiệt độ nước cấp"]) && !globalState.manualControl.comp){
+            PressCompButton("comp", true);
+        }
+
+        if(globalState?.autoControl?.minInputWaterTemp < GetValue(POINT_ID["Nhiệt độ nước cấp"]) && globalState.manualControl.comp){
+            PressCompButton("comp", false);
+        }
+
+    },[globalState.autoControl.minInputWaterTemp])
+    
     useEffect(() => {
         function GetValue(id){
             const targetUnit = globalState?.pointerData?.find(unit => unit?.id === id);
