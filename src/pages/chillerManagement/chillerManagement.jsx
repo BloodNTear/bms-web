@@ -288,7 +288,9 @@ function ChillerManagement(){
             PressCompButton("comp", false);
         }
 
-    },[globalState.autoControl.minInputWaterTemp, globalState.autoControl.currentWaterTemp])
+        console.log("UseEffect is triggered");
+
+    },[globalState.autoControl.minInputWaterTemp, globalState.autoControl.currentWaterTemp]);
     
     useEffect(() => {
         function GetValue(id){
