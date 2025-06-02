@@ -51,7 +51,7 @@ function SystemStatus({currentState, currentMode, onOff, onManual, onAuto}){
 
     //#region Alert
     const deltaP = GetPressureDiff() - currentState?.autoControl?.volumePressure;
-    const alertLevel = (deltaP / 0.5) * 10;
+    const alertLevel = (deltaP / 0.5) * 10 > 0 ? (deltaP / 0.5) * 10 : 0;
 
     useEffect(() => {
         if(alertLevel >= 10){
