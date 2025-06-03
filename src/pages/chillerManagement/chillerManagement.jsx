@@ -348,7 +348,7 @@ function ChillerManagement(){
                 };
 
                 try {
-                    const response = await axiosInstance.post(API_ENDPOINT, api_model);
+                    const response = await silentAxiosInstance.post(API_ENDPOINT, api_model);
                     if(response?.data?.status){
                         callReload && callReload();
                     }else{
