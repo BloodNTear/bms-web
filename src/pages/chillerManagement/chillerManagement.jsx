@@ -380,7 +380,7 @@ function ChillerManagement(){
             return () => clearInterval(interval);
         }
 
-    },[globalState.autoControl.volumePressure]);
+    },[globalState.autoControl.volumePressure, globalState.manualControl]);
     //#endregion
 
     return(
