@@ -369,6 +369,8 @@ function ChillerManagement(){
                     return result
                 }
 
+                console.log(`Interval runs: deltaP: ${deltaP}, pressure threshold: ${globalState?.autoControl?.volumePressure}`);
+
                 if(deltaP > globalState?.autoControl?.volumePressure){
                     CallSaveValveValue("valveOpenPercentage", limitValve(globalState?.manualControl?.valvePercentage + 5));
                 }
