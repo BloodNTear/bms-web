@@ -10,13 +10,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    gap: 20px;
 
     background: transparent;
     border: 2px solid rgba(255,255,255, .2);    
     backdrop-filter: blur(30px);
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255,255,255, .2);
+}
+
+.chiller-management-wrapper .page-header .header-text{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.chiller-management-wrapper .page-header img{
+    width: 30%;
 }
 
 .chiller-management-wrapper .page-body{

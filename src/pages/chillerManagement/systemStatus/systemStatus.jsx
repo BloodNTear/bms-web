@@ -47,6 +47,25 @@ function SystemStatus({currentState, currentMode, onOff, onManual, onAuto}){
     function GetPressureDiff(){
         return GetValue(POINT_ID["Áp suất nước cấp"]) - GetValue(POINT_ID["Áp suất nước hồi"]);
     };
+
+    function GetValveOpenPercentage(){
+        switch(currentMode){
+            case "auto": return (                
+                    <InfoDisplayCase 
+                        title="Độ mở van:"
+                        info={alertLevel}
+                    />
+                );
+            case "manual": return (
+                    <InfoDisplayCase 
+                        title="Độ mở van:"
+                        info={GetValue(POINT_ID["Độ mở van"])}
+                    />
+                );
+            case "off": return null;
+            default: return (<p>Case out of bound!</p>);
+        }
+    }
     //#endregion
 
     //#region Alert
@@ -108,10 +127,7 @@ function SystemStatus({currentState, currentMode, onOff, onManual, onAuto}){
                     title="Tần số bơm:"
                     info={GetValue(POINT_ID["Tần số bơm"])}
                 />
-                <InfoDisplayCase 
-                    title="Độ mở van:"
-                    info={alertLevel}
-                />
+                {GetValveOpenPercentage()}
             </div>
         </div>
     )
