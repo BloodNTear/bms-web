@@ -120,6 +120,11 @@ function ManualControl({currentManualData, triggerReload}){
             id: "386d4a4d31c5dd071c6fe259"
         };
 
+        if(!(currentManualData.pump && currentManualData.pumpState)){
+            alert("Pump MUST be ON and START to turn on COMP");
+            return;
+        }
+
         try {
             const response = await axiosInstance.post(API_ENDPOINT, api_model);
             if(response?.data?.status){

@@ -25,7 +25,6 @@ function SystemStatus({currentState, currentMode, onOff, onManual, onAuto}){
     }
     function handleTurnAuto(){
         if(currentState.manualControl.pump &&
-             currentState.manualControl.comp &&
               currentState.manualControl.pumpState){
             onAuto && onAuto();
         }else{
