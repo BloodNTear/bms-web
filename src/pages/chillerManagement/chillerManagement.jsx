@@ -320,10 +320,7 @@ function ChillerManagement(){
                 return GetValue(POINT_ID["Áp suất nước cấp"]) - GetValue(POINT_ID["Áp suất nước hồi"]);
             };
 
-            const deltaP = GetPressureDiff() - globalState?.autoControl?.volumePressure;
-            const valveLevel = (deltaP / 0.5) * 100;
-            let actualApiValue = valveLevel > 0 ? valveLevel : 0;
-            actualApiValue = actualApiValue <= 100 ? actualApiValue : 100;
+            const deltaP = GetPressureDiff();
 
             async function CallSaveValveValue(field, value) {
                 const API_ENDPOINT = "points/save";
@@ -362,7 +359,25 @@ function ChillerManagement(){
                 }
             }
 
-            CallSaveValveValue("valveOpenPercentage", actualApiValue);
+            const interval = setInterval(async () => {
+
+                function limitValve(inputValue){
+                    let result = inputValue;
+                    if(result > 100) result = 100;
+                    if(result < 0) result = 0;
+
+                    return result
+                }
+
+                if(deltaP > globalState?.autoControl?.volumePressure){
+                    CallSaveValveValue("valveOpenPercentage", limitValve(globalState?.manualControl?.valvePercentage + 5));
+                }
+                if(deltaP < globalState.autoControl?.volumePressure){
+                    CallSaveValveValue("valveOpenPercentage", limitValve(globalState?.manualControl?.valvePercentage - 5));
+                }
+
+            }, 2 * 1000);
+            return () => clearInterval(interval);
         }
 
     },[globalState.autoControl.volumePressure]);
