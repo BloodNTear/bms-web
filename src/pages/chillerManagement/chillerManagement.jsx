@@ -350,7 +350,7 @@ function ChillerManagement(){
                 try {
                     const response = await silentAxiosInstance.post(API_ENDPOINT, api_model);
                     if(response?.data?.status){
-                        callReload && callReload();
+                        // callReload && callReload();
                     }else{
                         console.error("Auto Set Valve Open: " + response?.data?.MESSAGE);
                     }
