@@ -1,0 +1,47 @@
+[{
+    "sesstionID": "b5f98b50-a339-4dbf-b150-d14a789cab7b",
+    "pointID": "67efeefa-f3ee-4e39-83ab-5d1256bc82d0",
+    "start": "2025-06-01T00:00:00",
+    "end": "2025-06-01T00:02:00",
+    "graphUnit": "Temperature (°C)",
+    "lineName": "Nhiệt độ nước cấp",
+    "controlModeTimeStamps": [
+    {
+        "timeStampID": "fcd51d99-cd05-494f-930c-7332c94c6fd5",
+        "timeStamp": "2025-06-01T00:00:00",
+        "mode": 1,
+        "sesstionGraphID": "b5f98b50-a339-4dbf-b150-d14a789cab7b",
+        "sessionGraph": null
+    },
+    {
+        "timeStampID": "55baa86b-4ac9-4308-bfcc-e814d9604200",
+        "timeStamp": "2025-06-01T00:01:00",
+        "mode": 2,
+        "sesstionGraphID": "b5f98b50-a339-4dbf-b150-d14a789cab7b",
+        "sessionGraph": null
+    }
+    ],
+    "graphRecords": [
+    {
+        "recordID": "1a2cb901-13a7-4b4d-9732-d2f67ac80a12",
+        "pointValue": 65.21,
+        "timeStamp": "2025-06-01T00:00:00",
+        "sesstionGraphID": "b5f98b50-a339-4dbf-b150-d14a789cab7b",
+        "sessionGraph": null
+    },
+    {
+        "recordID": "fd547550-16b3-41b3-9746-117878007512",
+        "pointValue": 17.87,
+        "timeStamp": "2025-06-01T00:00:04",
+        "sesstionGraphID": "b5f98b50-a339-4dbf-b150-d14a789cab7b",
+        "sessionGraph": null
+    },
+    {
+        "recordID": "9b0ab807-ecf3-473c-91b6-fe5705d1c4ac",
+        "pointValue": 7.23,
+        "timeStamp": "2025-06-01T00:00:08",
+        "sesstionGraphID": "b5f98b50-a339-4dbf-b150-d14a789cab7b",
+        "sessionGraph": null
+    }
+    ]
+}]

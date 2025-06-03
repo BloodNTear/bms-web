@@ -126,7 +126,10 @@ function SystemStatus({currentState, currentMode, onOff, onManual, onAuto}){
                     title="Tần số bơm:"
                     info={GetValue(POINT_ID["Tần số bơm"])}
                 />
-                {GetValveOpenPercentage()}
+                <InfoDisplayCase 
+                        title="Độ mở van:"
+                        info={GetValue(POINT_ID["Độ mở van"])}
+                />
             </div>
         </div>
     )

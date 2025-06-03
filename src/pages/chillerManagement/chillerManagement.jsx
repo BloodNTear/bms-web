@@ -304,6 +304,7 @@ function ChillerManagement(){
     },[globalState.autoControl.minInputWaterTemp, globalState.autoControl.currentWaterTemp]);
     
     //Auto Adjust Valve open percentage in Auto Mode 
+    const valveRefreshRate = 5;
     useEffect(() => {
 
         if(controlMode === "auto"){
@@ -363,13 +364,11 @@ function ChillerManagement(){
 
                 function limitValve(inputValue){
                     let result = inputValue;
-                    if(result > 100) result = 100;
-                    if(result < 0) result = 0;
+                    if(result > 100) return 100;
+                    if(result < 0) return 0;
 
-                    return result
+                    return result;
                 }
-
-                console.log(`Interval runs: deltaP: ${deltaP}, pressure threshold: ${globalState?.autoControl?.volumePressure}`);
 
                 if(deltaP > globalState?.autoControl?.volumePressure){
                     CallSaveValveValue("valveOpenPercentage", limitValve(globalState?.manualControl?.valvePercentage + 5));
@@ -378,7 +377,7 @@ function ChillerManagement(){
                     CallSaveValveValue("valveOpenPercentage", limitValve(globalState?.manualControl?.valvePercentage - 5));
                 }
 
-            }, 2 * 1000);
+            }, valveRefreshRate * 1000);
             return () => clearInterval(interval);
         }
 
