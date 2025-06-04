@@ -4,21 +4,27 @@ import { useEffect, useState } from 'react';
 
 import { useAxiosWithAuth } from '../../api/useAxiosWithAuth';
 import { useSilentAxiosWithAuth } from '../../api/useSilentAxiosWithAuth';
+import { useAxiosWithMyBE } from '../../api/useAxioWithMyBE';
 
 import { SystemStatus } from './systemStatus';
 import { VisualGraph } from './VisualGraph';
 import { AutoControl } from './AutoControl';
 import { ManualControl } from './ManualControl';
 
+import RealTimeVisualGraph from '../GraphPage/RealTimeGraph/RealTimeGraph.jsx';
+
 import { POINT_ID } from '../../mocks/PointIDs';
 
 import FALBANNER from '../../assets/fal-banner.png';
 import UNIBANNER from '../../assets/uni-banner.png';
 
+import {mockGraphData} from '../../mocks/mockGraphData.jsx';
+
 function ChillerManagement(){
 
     const axiosInstance = useAxiosWithAuth();
-    const silentAxiosInstance = useSilentAxiosWithAuth();
+    //const silentAxiosInstance = useSilentAxiosWithAuth();
+    const silentAxiosInstance = useAxiosWithMyBE();
 
     //#region Get API Info 
     const [globalState, setGlobalState] = useState(() => {
@@ -82,9 +88,10 @@ function ChillerManagement(){
         };
 
         async function fetchData(){
-            const GET_URL = "points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
+            //const GET_URL = "points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
+            const GET_URL = "SessionGraph/GetPseudoData";
             try{
-                const response  = await axiosInstance.get(GET_URL);
+                const response  = await silentAxiosInstance.get(GET_URL);
                 if(response?.data){
                     SetNewGlobalState(response?.data?.data);
                 }else{
@@ -223,7 +230,8 @@ function ChillerManagement(){
         };
 
         async function fetchData(){
-            const GET_URL = "points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
+            // const GET_URL = "points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
+            const GET_URL = "SessionGraph/GetPseudoData";
             try{
                 const response  = await silentAxiosInstance.get(GET_URL);
                 if(response?.data){
@@ -384,6 +392,10 @@ function ChillerManagement(){
     },[globalState.autoControl.volumePressure, globalState.manualControl]);
     //#endregion
 
+
+    //#region Real Time Graph Support
+    //#endRegion
+
     return(
         <div className="chiller-management-wrapper">
             <div className="page-header">
@@ -412,10 +424,13 @@ function ChillerManagement(){
                 </div>
                 <div className="image-and-inputs">
 
-                    <VisualGraph 
+                    {/* <VisualGraph 
                         pumpState={globalState.manualControl.pumpState}
                         compState={globalState.manualControl.comp}
                         valveState={globalState.manualControl.valvePercentage}
+                    /> */}
+                    <RealTimeVisualGraph 
+                        initialGraphData={mockGraphData}
                     />
 
                     {GetControlElement()}

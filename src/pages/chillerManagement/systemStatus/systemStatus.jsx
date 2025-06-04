@@ -34,7 +34,8 @@ function SystemStatus({currentState, currentMode, onOff, onManual, onAuto}){
     //#endregion
 
     //#region UI Helper Functions
-    function GetValue(id){
+    function GetValue(id){    
+        console.log(systemData?.pointerData);
         const targetUnit = systemData?.pointerData?.find(unit => unit?.id === id);
         if(targetUnit){
             return targetUnit?.point_value;
@@ -71,11 +72,11 @@ function SystemStatus({currentState, currentMode, onOff, onManual, onAuto}){
     const deltaP = GetPressureDiff() - currentState?.autoControl?.volumePressure;
     const alertLevel = (deltaP / 0.3) * 100 > 0 ? (deltaP / 0.3) * 100 : 0;
 
-    useEffect(() => {
-        if(alertLevel >= 100){
-            alert("Warning, the pressure is skyrocketing, we're gonna have a whole new Chernobyl right here soon <!>");
-        }
-    },[alertLevel]);
+    // useEffect(() => {
+    //     if(alertLevel >= 100){
+    //         alert("Warning, the pressure is skyrocketing, we're gonna have a whole new Chernobyl right here soon <!>");
+    //     }
+    // },[alertLevel]);
     //#endregion
 
     return(

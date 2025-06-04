@@ -13,7 +13,7 @@ export const useAxiosWithMyBE = () => {
     useEffect(() => {
         const requestInterceptor = axiosInstance.interceptors.request.use(
             (config) => {
-                setLoading(true); // Show loading indicator
+                //setLoading(true); // Show loading indicator
                 return config;
             },
             (error) => {
@@ -24,7 +24,7 @@ export const useAxiosWithMyBE = () => {
 
         const responseInterceptor = axiosInstance.interceptors.response.use(
             (response) => {
-                setLoading(false); // Hide loading indicator
+                //setLoading(false); // Hide loading indicator
                 return response;
             },
             (error) => {
