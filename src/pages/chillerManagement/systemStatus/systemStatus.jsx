@@ -124,7 +124,7 @@ function SystemStatus({currentState, currentMode, onOff, onManual, onAuto}){
                 />
                 <InfoDisplayCase 
                     title="Tần số bơm:"
-                    info={GetValue(POINT_ID["Tần số bơm"]) + ` Hz`}
+                    info={GetValue(POINT_ID["Tần số bơm"]) / 2 + ` Hz`}
                 />
                 <InfoDisplayCase 
                         title="Độ mở van:"

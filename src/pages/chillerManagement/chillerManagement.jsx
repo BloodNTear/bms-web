@@ -319,9 +319,87 @@ function ChillerManagement(){
     
     //Auto Adjust Valve open percentage in Auto Mode 
     const valveRefreshRate = 5;
+    //true for up, false for down
+    const [valveAdjustState, setValveAdjustState] = useState(null);
+    const valveOpenRef = useRef(null);
+
+    useEffect(() => {
+    console.log("useEffect run, current state: " + valveAdjustState);
+
+    function limitValve(inputValue) {
+        let result = inputValue;
+        if(result > 100) return 100;
+        if(result < 0) return 0;
+        return result;
+    }
+
+    async function CallSaveValveValue(field, value) {
+        // Your existing API call code here ...
+        const API_ENDPOINT = "points/save";
+        const api_model = {
+            slug: "van-can-bang_w",
+            excerpt: "4|HR|612|0|W",
+            description: "",
+            thumbnail: "",
+            point_value: value,
+            calib: "0",
+            point_value_type: "VALUE",
+            default_value: "0",
+            access_type: "write",
+            updated_date: "2025-06-01T03:39:59.220Z",
+            status: "active",
+            is_featured: 1,
+            created_date: 946687484581,
+            device_id: "67377d59a814500731ce2da4",
+            unit_id: "386d484531c5dd071c6fe254",
+            schedule_id: null,
+            title: "van can bang_W",
+            company_id: "5cf4eb1557a81c267803c398",
+            author_id: "5cf5013557a81c267803c3a3",
+            id: "386d4dfca30e03071cec3db3"
+        };
+
+        try {
+            const response = await axiosInstance.post(API_ENDPOINT, api_model);
+            if(response?.data?.status){
+                callReload && callReload();
+            } else {
+                console.error("Auto Set Valve Open: " + response?.data?.MESSAGE);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // Initialize ref if null
+    if (valveOpenRef.current === null) {
+        valveOpenRef.current = 0; // or some initial valve position
+    }
+
+    const valveInterval = setInterval(async () => {
+        console.log("interval run");
+        if(valveAdjustState === true){
+            console.log("open more");
+            let newValue = limitValve(valveOpenRef.current + 5);
+            valveOpenRef.current = newValue;  // update ref for next interval
+            await CallSaveValveValue("valveOpenPercentage", newValue);
+        }
+        if(valveAdjustState === false){
+            console.log("open less");
+            let newValue = limitValve(valveOpenRef.current - 5);
+            valveOpenRef.current = newValue;  // update ref for next interval
+            await CallSaveValveValue("valveOpenPercentage", newValue);
+        }
+    }, valveRefreshRate * 1000);
+
+    return () => clearInterval(valveInterval); // clear interval on cleanup
+    }, [valveAdjustState]);
+
+
     useEffect(() => {
 
         if(controlMode === "auto"){
+
             function GetValue(id){
                 const targetUnit = globalState?.pointerData?.find(unit => unit?.id === id);
                 if(targetUnit){
@@ -330,74 +408,22 @@ function ChillerManagement(){
                     return "Unit not found <!>";
                 }
             };
-
             function GetPressureDiff(){
-                return GetValue(POINT_ID["Áp suất nước cấp"]) - GetValue(POINT_ID["Áp suất nước hồi"]);
+                    return GetValue(POINT_ID["Áp suất nước cấp"]) - GetValue(POINT_ID["Áp suất nước hồi"]);
             };
 
+            valveOpenRef.current = globalState?.manualControl?.valvePercentage;
             const deltaP = GetPressureDiff();
-
-            async function CallSaveValveValue(field, value) {
-                const API_ENDPOINT = "points/save";
-                const api_model = {
-                    slug: "van-can-bang_w",
-                    excerpt: "4|HR|612|0|W",
-                    description: "",
-                    thumbnail: "",
-                    point_value: value,
-                    calib: "0",
-                    point_value_type: "VALUE",
-                    default_value: "0",
-                    access_type: "write",
-                    updated_date: "2025-06-01T03:39:59.220Z",
-                    status: "active",
-                    is_featured: 1,
-                    created_date: 946687484581,
-                    device_id: "67377d59a814500731ce2da4",
-                    unit_id: "386d484531c5dd071c6fe254",
-                    schedule_id: null,
-                    title: "van can bang_W",
-                    company_id: "5cf4eb1557a81c267803c398",
-                    author_id: "5cf5013557a81c267803c3a3",
-                    id: "386d4dfca30e03071cec3db3"
-                };
-
-                try {
-                    const response = await silentAxiosInstance.post(API_ENDPOINT, api_model);
-                    if(response?.data?.status){
-                        // callReload && callReload();
-                    }else{
-                        console.error("Auto Set Valve Open: " + response?.data?.MESSAGE);
-                    }
-                } catch (error) {
-                    console.error(error)
-                }
+            if(deltaP > globalState?.autoControl?.volumePressure){
+                setValveAdjustState(true);
             }
-
-            const interval = setInterval(async () => {
-
-                function limitValve(inputValue){
-                    let result = inputValue;
-                    if(result > 100) return 100;
-                    if(result < 0) return 0;
-
-                    return result;
-                }
-
-                if(deltaP > globalState?.autoControl?.volumePressure){
-                    CallSaveValveValue("valveOpenPercentage", limitValve(globalState?.manualControl?.valvePercentage + 5));
-                }
-                if(deltaP < globalState.autoControl?.volumePressure){
-                    CallSaveValveValue("valveOpenPercentage", limitValve(globalState?.manualControl?.valvePercentage - 5));
-                }
-
-            }, valveRefreshRate * 1000);
-            return () => clearInterval(interval);
+            if(deltaP < globalState?.autoControl?.volumePressure){
+                setValveAdjustState(false);
+            }
         }
 
-    },[globalState.autoControl.volumePressure, globalState.manualControl]);
+    },[globalState.autoControl.volumePressure, globalState.manualControl, globalState.controlMode]);
     //#endregion
-
 
     //#region Real Time Graph Support
     const [graphState, setGraphState] = useState(false);
