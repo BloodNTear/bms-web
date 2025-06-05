@@ -406,23 +406,54 @@ function ChillerManagement(){
     });
     const [newGraphPoints, setNewGraphPoints] = useState(undefined);
 
+    // temp and pressure
+    const [switchGraph, setSwitchGraph] = useState('pressure');
+    function switchBetweenGraph(){
+        if(switchGraph === 'temp') setSwitchGraph('pressure');
+        else setSwitchGraph('temp');
+    }
+
     function CreateNewGraph(){
-        const initialGraphDataModel = {
-            graphName: "Áp suất nước",
-            graphUnit: "Pressure (Pa)",
-            currentControlMode: 1,
-            lineData: [
-                {
-                    lineName: "Áp suất nước cấp",
-                    pointerID: POINT_ID["Áp suất nước cấp"]
-                },
-                {
-                    lineName: "Áp suất nước hồi",
-                    pointerID: POINT_ID["Áp suất nước hồi"]
+        
+        function GetInitialGraphState(){
+            switch(switchGraph){
+                case 'pressure': return {
+                    graphName: "Áp suất nước",
+                    graphUnit: "Pressure (Pa)",
+                    currentControlMode: 1,
+                    lineData: [
+                        {
+                            lineName: "Áp suất nước cấp",
+                            pointerID: POINT_ID["Áp suất nước cấp"]
+                        },
+                        {
+                            lineName: "Áp suất nước hồi",
+                            pointerID: POINT_ID["Áp suất nước hồi"]
+                        }
+                    ],
+                    currentPointerData: globalState.pointerData
                 }
-            ],
-            currentPointerData: globalState.pointerData
+                case 'temp': return {
+                    graphName: "Nhiệt độ nước",
+                    graphUnit: "Temperature (°C)",
+                    currentControlMode: 1,
+                    lineData: [
+                        {
+                            lineName: "Nhiệt độ nước cấp",
+                            pointerID: POINT_ID["Nhiệt độ nước cấp"]
+                        },
+                        {
+                            lineName: "Nhiệt độ nước hồi",
+                            pointerID: POINT_ID["Nhiệt độ nước hồi"]
+                        }
+                    ],
+                    currentPointerData: globalState.pointerData
+                }
+                default: return 'Graph name out of bound';
+            }
         }
+
+        const initialGraphDataModel = GetInitialGraphState();
 
         const initialGraphData = CreateInitialGraphData(initialGraphDataModel);
         console.log(initialGraphData);
@@ -465,8 +496,8 @@ function ChillerManagement(){
     }, [graphState]);
     //#endregion
 
-    //#region Listen t Ctrl ~
-      useEffect(() => {
+    //#region Listen to key board shortcut
+    useEffect(() => {
         function handleKeyDown(event) {
             if (event.ctrlKey && event.key === '`') {
                 event.preventDefault(); 
@@ -480,6 +511,21 @@ function ChillerManagement(){
         window.removeEventListener('keydown', handleKeyDown);
         };
     }, [controlMode, graphState]);
+
+    useEffect(() => {
+        function handleKeyDown(event) {
+            if (event.ctrlKey && event.key.toLowerCase() === 'q') {
+                event.preventDefault(); 
+                switchBetweenGraph();
+            }
+        }
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [controlMode, graphState, switchBetweenGraph]);
     //#endregion
 
     return(
