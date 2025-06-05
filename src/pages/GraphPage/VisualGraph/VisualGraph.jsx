@@ -4,8 +4,6 @@ import ReactECharts from 'echarts-for-react';
 
 function VisualGraph({graphData}){
 
-    console.log(graphData);
-
     let graphSettings = "Hello";
     if(graphData){
         graphSettings = BuildGraphSettings(graphData);

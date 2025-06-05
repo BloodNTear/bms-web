@@ -35,7 +35,6 @@ function SystemStatus({currentState, currentMode, onOff, onManual, onAuto}){
 
     //#region UI Helper Functions
     function GetValue(id){    
-        console.log(systemData?.pointerData);
         const targetUnit = systemData?.pointerData?.find(unit => unit?.id === id);
         if(targetUnit){
             return targetUnit?.point_value;

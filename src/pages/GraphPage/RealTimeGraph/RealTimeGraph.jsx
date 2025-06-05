@@ -1,5 +1,7 @@
+import './RealTimeGraph.css';
 import React, { useState, useEffect } from 'react';
 import ReactECharts from 'echarts-for-react';
+import {v4 as uuidv4} from 'uuid';
 
 function RealTimeVisualGraph({ initialGraphData, newRecords, autoScrollWindowSeconds = 300 }) {
   const [graphLines, setGraphLines] = useState(initialGraphData.graphLines || []);
@@ -9,21 +11,28 @@ function RealTimeVisualGraph({ initialGraphData, newRecords, autoScrollWindowSec
   useEffect(() => {
     if (!newRecords || newRecords.length === 0) return;
 
+    // Group incoming records by graphLineID
+    const groupedRecords = new Map();
+    newRecords.forEach(r => {
+      if (!groupedRecords.has(r.graphLineID)) {
+        groupedRecords.set(r.graphLineID, []);
+      }
+      groupedRecords.get(r.graphLineID).push(r);
+    });
+
     setGraphLines(prevLines => {
-      // Clone previous lines
       const updatedLines = prevLines.map(line => {
-        // Find new data for this line
-        const incomingLine = newRecords.find(nr => nr.lineID === line.lineID);
-        if (!incomingLine) return line;
+        const incoming = groupedRecords.get(line.lineID);
+        if (!incoming) return line;
 
-        // Merge existing records with new records
-        const combinedRecords = [...line.graphRecords, ...incomingLine.records];
+        const combinedRecords = [...line.graphRecords, ...incoming];
 
-        // Remove duplicates and sort by timestamp
+        // Deduplicate by recordID
         const uniqueRecordsMap = new Map();
         combinedRecords.forEach(r => {
           uniqueRecordsMap.set(r.recordID, r);
         });
+
         const uniqueRecords = Array.from(uniqueRecordsMap.values()).sort(
           (a, b) => new Date(a.timeStamp) - new Date(b.timeStamp)
         );
@@ -31,14 +40,11 @@ function RealTimeVisualGraph({ initialGraphData, newRecords, autoScrollWindowSec
         return { ...line, graphRecords: uniqueRecords };
       });
 
-      // Update endTime based on latest timestamp among new data
-      const allNewTimes = newRecords.flatMap(nr =>
-        nr.records.map(r => new Date(r.timeStamp).getTime())
-      );
+      // Update time window
+      const allNewTimes = newRecords.map(r => new Date(r.timeStamp).getTime());
       if (allNewTimes.length > 0) {
         const maxNewTime = Math.max(...allNewTimes);
         setEndTime(maxNewTime);
-        // Optionally, update startTime to maintain autoScrollWindowSeconds
         setStartTime(maxNewTime - autoScrollWindowSeconds * 1000);
       }
 
@@ -46,7 +52,6 @@ function RealTimeVisualGraph({ initialGraphData, newRecords, autoScrollWindowSec
     });
   }, [newRecords, autoScrollWindowSeconds]);
 
-  // Prepare series for echarts option
   const series = graphLines.map(line => ({
     name: line.lineName,
     type: 'line',
@@ -66,7 +71,102 @@ function RealTimeVisualGraph({ initialGraphData, newRecords, autoScrollWindowSec
     series,
   };
 
-  return <ReactECharts option={option} style={{ height: 400, width: '100%' }} />;
+  return (
+    <div className="real-time-graph">
+      <ReactECharts option={option} style={{ height: 400, width: '100%' }} />
+    </div>
+  );
 }
 
 export default RealTimeVisualGraph;
+
+
+
+const initialGraphDataModel = {
+  graphName: "SampleGraph",
+  graphUnit: "Pressure (Pa)",
+  currentControlMode: 1,
+  lineData: [
+    {
+      lineName: "Sample Line 1",
+      pointerID: uuidv4()
+    },
+    {
+      lineName: "Sample Line 2",
+      pointerID: uuidv4()
+    }
+  ],
+  currentPointerData: []
+}
+
+export function CreateInitialGraphData(createGraphData = initialGraphDataModel){
+  
+  const graphID = uuidv4();
+  
+  let graph = {
+      sessionGraphID: graphID,
+      graphName: createGraphData.graphName,
+      start: new Date().toISOString(),
+      end: new Date().toISOString(),
+      graphUnit: createGraphData.graphUnit,
+      controlModeTimeStamps: [
+        {
+            timeStampID: uuidv4(),
+            timeStamp: new Date().toISOString(),
+            mode: createGraphData.currentControlMode,
+            sesstionGraphID: graphID,
+            sessionGraph: null
+        }
+      ],
+      graphLines: createGraphData.lineData.map((line) => {
+                    return {
+                      lineID: uuidv4(),
+                      sessionGraphID: graphID,
+                      pointerID: line.pointerID,
+                      lineName: line.lineName,
+                      sessionGraph: null,
+                      graphRecords: []
+                    }
+                  })
+  }
+
+  createGraphData.currentPointerData.forEach((pointerData) => {
+      graph.graphLines.forEach((line) => {
+        if(line.pointerID === pointerData.id){
+          line.graphRecords.push({
+            recordID: uuidv4(),
+            pointValue: pointerData.point_value,
+            timeStamp: new Date().toISOString(),
+            graphLineID: line.lineID,
+            graphLine: null
+          });
+        }
+      })
+  });
+
+  return graph;
+}
+
+/**
+ * Data = Pointer Data At that time
+ * @param {*} data 
+ */
+export function MapDataToGraphPoint(intialData, newPointerData){
+  let result = [];
+
+  newPointerData.forEach((pointerData) => {
+      intialData.graphLines.forEach((line) => {
+        if(line.pointerID === pointerData.id){
+          result.push({
+            recordID: uuidv4(),
+            pointValue: pointerData.point_value,
+            timeStamp: new Date().toISOString(),
+            graphLineID: line.lineID,
+            graphLine: null
+          });
+        }
+      })
+  });
+
+  return result;
+}
