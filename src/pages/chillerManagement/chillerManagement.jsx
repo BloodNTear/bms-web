@@ -21,6 +21,7 @@ import FALBANNER from '../../assets/fal-banner.png';
 import UNIBANNER from '../../assets/uni-banner.png';
 
 import {mockGraphData} from '../../mocks/mockGraphData.jsx';
+import InputCase from '../../common/InputCase/InputCase.jsx';
 
 function ChillerManagement(){
 
@@ -191,7 +192,11 @@ function ChillerManagement(){
     //#endregion
 
     //#region Silent reload and Auto Control
-    const refreshRate = 0.5;
+    const [refreshRate, setRefreshRate] = useState(0.5);
+
+    function ChangeRefreshRate(field, value){
+        setRefreshRate(Number(value));
+    }
     
     //Auto refresh data at refreshRate
     useEffect(() => {
@@ -252,7 +257,7 @@ function ChillerManagement(){
         }, refreshRate * 1000);
         return () => clearInterval(interval);
         
-    }, [silentAxiosInstance]);
+    }, [silentAxiosInstance, refreshRate]);
 
     //Auto Turn On/Off Compress in Auto Mode
     useEffect(() => {
@@ -438,7 +443,10 @@ function ChillerManagement(){
         }
     }
 
-    const graphDegree = 0.5;
+    const [graphDegree, setGraphDegree] = useState(0.5);
+    function changeGraphDegree(field, value){
+        setGraphDegree(Number(value));
+    }
     const pointerDataRef = useRef(globalState.pointerData);
 
     // Keep the ref updated with the latest pointerData
@@ -499,6 +507,16 @@ function ChillerManagement(){
                         onOff={TurnOff}
                         onManual={TurnManual}
                         onAuto={TurnAuto}
+                    />
+                    <InputCase 
+                        title={"Tốc độ làm mới dữ liệu"}
+                        value={refreshRate}
+                        onSubmit={ChangeRefreshRate}
+                    />
+                    <InputCase 
+                        title={"Tốc độ làm mới biểu đồ"}
+                        value={graphDegree}
+                        onSubmit={changeGraphDegree}
                     />
                 </div>
                 <div className="image-and-inputs">

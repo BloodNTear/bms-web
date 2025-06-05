@@ -104,31 +104,31 @@ function SystemStatus({currentState, currentMode, onOff, onManual, onAuto}){
             <div className="info-display">
                 <InfoDisplayCase 
                     title="Áp suất nước cấp:"
-                    info={GetValue(POINT_ID["Áp suất nước cấp"])}
+                    info={GetValue(POINT_ID["Áp suất nước cấp"]) + ` Bar`}
                 />
                 <InfoDisplayCase 
                     title="Áp suất nước hồi:"
-                    info={GetValue(POINT_ID["Áp suất nước hồi"])}
+                    info={GetValue(POINT_ID["Áp suất nước hồi"]) + ` Bar`}
                 />
                 <InfoDisplayCase 
                     title="Nhiệt độ nước cấp:"
-                    info={GetValue(POINT_ID["Nhiệt độ nước cấp"])}
+                    info={GetValue(POINT_ID["Nhiệt độ nước cấp"]) + ` °C`}
                 />
                 <InfoDisplayCase 
                     title="Nhiệt độ nước hồi:"
-                    info={GetValue(POINT_ID["Nhiệt độ nước hồi"])}
+                    info={GetValue(POINT_ID["Nhiệt độ nước hồi"]) + ` °C`}
                 />
                 <InfoDisplayCase 
                     title="Chênh lệch áp suất:"
-                    info={GetPressureDiff()}
+                    info={GetPressureDiff().toFixed(2)}
                 />
                 <InfoDisplayCase 
                     title="Tần số bơm:"
-                    info={GetValue(POINT_ID["Tần số bơm"])}
+                    info={GetValue(POINT_ID["Tần số bơm"]) + ` Hz`}
                 />
                 <InfoDisplayCase 
                         title="Độ mở van:"
-                        info={GetValue(POINT_ID["Độ mở van"])}
+                        info={GetValue(POINT_ID["Độ mở van"]) + ` %`}
                 />
             </div>
         </div>

@@ -5,7 +5,8 @@ function WaterPipe({
   flowDirection = true,
   speed = 1,
   startPoint,
-  endPoint
+  endPoint,
+  color = '#00bfff'
 }) {
   const [x1, y1] = startPoint;
   const [x2, y2] = endPoint;
@@ -29,8 +30,9 @@ function WaterPipe({
       y1={y1}
       x2={x2}
       y2={y2}
+      stroke={color}
       strokeDasharray={dashLength}
-      strokeWidth="8"
+      strokeWidth="12"
       style={animationStyle}
     />
   );
