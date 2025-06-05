@@ -144,7 +144,7 @@ function ManualControl({currentManualData, triggerReload}){
             excerpt: "4|HR|627|0|W",
             description: "viết tần số xuống Override Value AO 02",
             thumbnail: "",
-            point_value: value || 0,
+            point_value: value * 2 || 0,
             calib: "0",
             point_value_type: "VALUE",
             default_value: "35",

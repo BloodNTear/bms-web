@@ -93,7 +93,7 @@ function ChillerManagement(){
             const GET_URL = "points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
             //const GET_URL = "SessionGraph/GetPseudoData";
             try{
-                const response  = await axiosInstance.get(GET_URL);
+                const response  = await silentAxiosInstance.get(GET_URL);
                 if(response?.data){
                     SetNewGlobalState(response?.data?.data);
                 }else{
@@ -289,7 +289,7 @@ function ChillerManagement(){
                 };
 
                     try {
-                        const response = await axiosInstance.post(API_ENDPOINT, api_model);
+                        const response = await silentAxiosInstance.post(API_ENDPOINT, api_model);
                         if(response?.data?.status){
                             callReload && callReload();
                         }else{
@@ -362,7 +362,7 @@ function ChillerManagement(){
         };
 
         try {
-            const response = await axiosInstance.post(API_ENDPOINT, api_model);
+            const response = await silentAxiosInstance.post(API_ENDPOINT, api_model);
             if(response?.data?.status){
                 callReload && callReload();
             } else {
