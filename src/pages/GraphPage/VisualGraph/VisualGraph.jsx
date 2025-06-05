@@ -25,14 +25,15 @@ export function BuildGraphSettings(graphData, XDevisionDegree = 20, YDvisionDegr
     let globalMaxSpanSec = 0;
 
     const series = [];
+    const lineColors = ['#00bfff', '#ff6600', '#33cc33', '#9933ff', '#ff3366'];
 
     const start = new Date(graphData.start);
     const end = new Date(graphData.end);
     const spanSec = Math.ceil((end - start) / 1000);
     if (spanSec > globalMaxSpanSec) globalMaxSpanSec = spanSec;
 
-    graphData.graphLines.forEach((line) => {
-            const points = line.graphRecords.map(record => {
+    graphData.graphLines.forEach((line, index) => {
+        const points = line.graphRecords.map(record => {
             const t = new Date(record.timeStamp);
             const secondsFromStart = (t - start) / 1000;
             const y = record.pointValue;
@@ -40,14 +41,23 @@ export function BuildGraphSettings(graphData, XDevisionDegree = 20, YDvisionDegr
             return [secondsFromStart, y];
         });
 
+        const color = lineColors[index % lineColors.length]; // cycle through colors
+
         series.push({
             name: line.lineName,
             type: 'line',
             data: points,
             showSymbol: true,
-            smooth: false
+            smooth: false,
+            lineStyle: {
+                color: color
+            },
+            itemStyle: {
+                color: color
+            }
         });
     });
+
 
     // Round X span and Y max up to nearest 10
     const roundedX = Math.ceil(globalMaxSpanSec / 10) * 10;
@@ -101,7 +111,10 @@ export function BuildGraphSettings(graphData, XDevisionDegree = 20, YDvisionDegr
 
     return {
         title: {
-            text: graphData.graphName
+            text: graphData.graphName,
+            textStyle: {
+                color: '#fff', // ← Your desired title color
+            }
         },
         tooltip: {
             trigger: 'axis'
@@ -117,7 +130,21 @@ export function BuildGraphSettings(graphData, XDevisionDegree = 20, YDvisionDegr
             max: roundedX,
             interval: roundedX / XDevisionDegree,
             axisLabel: {
-                formatter: '{value}s'
+                formatter: '{value}s',
+                color: '#fff'
+            },
+            axisLine: {
+                lineStyle: {
+                color:  '#fff'      // Axis line color
+                }
+            },
+            axisTick: {
+                lineStyle: {
+                color:  '#fff'      // Tick color
+                }
+            },
+            itemStyle: {
+                color: '#fff'
             }
         },
         yAxis: {
@@ -129,8 +156,19 @@ export function BuildGraphSettings(graphData, XDevisionDegree = 20, YDvisionDegr
             axisLabel: {
                 formatter: function (value) {
                     return value.toFixed(2); 
+                },
+                color: '#fff'
+            },
+            axisLine: {
+                lineStyle: {
+                color:  '#fff'      // Axis line color
                 }
-            }
+            },
+            axisTick: {
+                lineStyle: {
+                color:  '#fff'      // Tick color
+                }
+            },
         },
         grid: {
             left: '8%',

@@ -8,6 +8,8 @@ function RealTimeVisualGraph({ initialGraphData, newRecords, autoScrollWindowSec
   const [startTime, setStartTime] = useState(new Date(initialGraphData.start).getTime());
   const [endTime, setEndTime] = useState(new Date(initialGraphData.end).getTime());
 
+  const lineColors = ['#00bfff', '#ff6600', '#33cc33', '#9933ff', '#ff3366'];
+
   useEffect(() => {
     if (!newRecords || newRecords.length === 0) return;
 
@@ -52,22 +54,64 @@ function RealTimeVisualGraph({ initialGraphData, newRecords, autoScrollWindowSec
     });
   }, [newRecords, autoScrollWindowSeconds]);
 
-  const series = graphLines.map(line => ({
+  const series = graphLines.map((line, index) => (
+    {
     name: line.lineName,
     type: 'line',
     showSymbol: false,
     data: line.graphRecords.map(r => [new Date(r.timeStamp).getTime(), r.pointValue]),
-  }));
+    lineStyle: {
+        color: lineColors[index % lineColors.length]
+    },
+    itemStyle: {
+        color: lineColors[index % lineColors.length]
+    }
+  }
+));
 
   const option = {
-    title: { text: initialGraphData.graphName },
+    title: { 
+      text: initialGraphData.graphName,
+       textStyle: {
+        color: '#fff', // ← Your desired title color
+      }
+    },
     tooltip: { trigger: 'axis' },
     xAxis: {
       type: 'time',
       min: startTime,
       max: endTime,
+      axisLabel: {
+        color: '#fff'      // Label text color
+      },
+      axisLine: {
+        lineStyle: {
+          color:  '#fff'      // Axis line color
+        }
+      },
+      axisTick: {
+        lineStyle: {
+          color:  '#fff'      // Tick color
+        }
+      }
     },
-    yAxis: { type: 'value', name: initialGraphData.graphUnit },
+    yAxis: { 
+      type: 'value', 
+      name: initialGraphData.graphUnit,
+      axisLabel: {
+        color: '#fff'      // Label text color
+      },
+      axisLine: {
+        lineStyle: {
+          color:  '#fff'      // Axis line color
+        }
+      },
+      axisTick: {
+        lineStyle: {
+          color:  '#fff'      // Tick color
+        }
+      }
+    },
     series,
   };
 

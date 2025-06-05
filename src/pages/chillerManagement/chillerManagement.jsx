@@ -90,8 +90,8 @@ function ChillerManagement(){
         };
 
         async function fetchData(){
-            //const GET_URL = "points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
-            const GET_URL = "SessionGraph/GetPseudoData";
+            const GET_URL = "points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
+            //const GET_URL = "SessionGraph/GetPseudoData";
             try{
                 const response  = await axiosInstance.get(GET_URL);
                 if(response?.data){
@@ -236,8 +236,8 @@ function ChillerManagement(){
         };
 
         async function fetchData(){
-            // const GET_URL = "points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
-            const GET_URL = "SessionGraph/GetPseudoData";
+             const GET_URL = "points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
+            //const GET_URL = "SessionGraph/GetPseudoData";
             try{
                 const response  = await silentAxiosInstance.get(GET_URL);
                 if(response?.data){
@@ -400,7 +400,7 @@ function ChillerManagement(){
 
 
     //#region Real Time Graph Support
-    const [graphState, setGraphState] = useState(true);
+    const [graphState, setGraphState] = useState(false);
     const [initialGraphData, setInitialGraphData] = useState(() => {
         return mockGraphData;
     });
