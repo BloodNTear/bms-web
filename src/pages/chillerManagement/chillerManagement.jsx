@@ -26,8 +26,7 @@ import InputCase from '../../common/InputCase/InputCase.jsx';
 function ChillerManagement(){
 
     const axiosInstance = useAxiosWithAuth();
-    //const silentAxiosInstance = useSilentAxiosWithAuth();
-    const silentAxiosInstance = useAxiosWithMyBE();
+    const silentAxiosInstance = useSilentAxiosWithAuth();
 
     //#region Get API Info 
     const [globalState, setGlobalState] = useState(() => {
@@ -94,7 +93,7 @@ function ChillerManagement(){
             //const GET_URL = "points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
             const GET_URL = "SessionGraph/GetPseudoData";
             try{
-                const response  = await silentAxiosInstance.get(GET_URL);
+                const response  = await axiosInstance.get(GET_URL);
                 if(response?.data){
                     SetNewGlobalState(response?.data?.data);
                 }else{
