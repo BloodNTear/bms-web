@@ -383,17 +383,21 @@ function ChillerManagement(){
         if(valveAdjustState === true){
             let newValue = limitValve(valveOpenRef.current + 5);
             valveOpenRef.current = newValue;  // update ref for next interval
-            await CallSaveValveValue("valveOpenPercentage", newValue);
+            if(controlMode === "auto"){
+                await CallSaveValveValue("valveOpenPercentage", newValue);
+            }
         }
         if(valveAdjustState === false){
             let newValue = limitValve(valveOpenRef.current - 5);
             valveOpenRef.current = newValue;  // update ref for next interval
-            await CallSaveValveValue("valveOpenPercentage", newValue);
+            if(controlMode === "auto"){
+                await CallSaveValveValue("valveOpenPercentage", newValue);
+            }
         }
     }, valveRefreshRate * 1000);
 
     return () => clearInterval(valveInterval); // clear interval on cleanup
-    }, [valveAdjustState]);
+    }, [valveAdjustState, controlMode]);
     //#endregion
 
     useEffect(() => {
