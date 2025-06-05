@@ -1,0 +1,9 @@
+.real-time-graph{
+
+    width: 100%;
+    height: 60%;
+
+    border: 2px solid rgba(255,255,255, .2);    
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255,255,255, .2);
+}

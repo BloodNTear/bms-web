@@ -98,6 +98,7 @@ function VisualGraph({ pumpState, valveState, compState }) {
           speed={4 - GetValveSpeed()}
           startPoint={[235, 453]}
           endPoint={[650, 453]}
+          color={'#ff6b00'}
         />
 
         {/* By Pass Valve To Return */}
@@ -107,6 +108,7 @@ function VisualGraph({ pumpState, valveState, compState }) {
           speed={3}
           startPoint={[650, 453]}
           endPoint={[1347, 453]}
+          color={'#ff8800'}
         />
 
         {/* Through By Pass Valve */}

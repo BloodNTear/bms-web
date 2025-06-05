@@ -3,7 +3,7 @@ import {Routes, Route} from 'react-router';
 
 import { ChillerManagement } from '../chillerManagement';
 
-import {PointerGraphChart} from '../GraphChart';
+import { GraphPage } from '../GraphPage';
 
 function ContentContainer(){
 
@@ -15,7 +15,7 @@ function ContentContainer(){
                 <Route index element={<ChillerManagement />} />
                 <Route path='ChillerManagement' element={<ChillerManagement />} />
 
-                <Route path="Chart" element={<PointerGraphChart pointerArray={pointerArray}/>} />
+                <Route path="Chart" element={<GraphPage />} />
             </Routes>
         </div>
     )

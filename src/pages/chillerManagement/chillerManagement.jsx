@@ -1,19 +1,27 @@
 import './chillerManagement.css';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { useAxiosWithAuth } from '../../api/useAxiosWithAuth';
 import { useSilentAxiosWithAuth } from '../../api/useSilentAxiosWithAuth';
+import { useAxiosWithMyBE } from '../../api/useAxioWithMyBE';
+import {v4 as uuidv4} from 'uuid';
 
 import { SystemStatus } from './systemStatus';
 import { VisualGraph } from './VisualGraph';
 import { AutoControl } from './AutoControl';
 import { ManualControl } from './ManualControl';
 
+import RealTimeVisualGraph from '../GraphPage/RealTimeGraph/RealTimeGraph.jsx';
+import { CreateInitialGraphData, MapDataToGraphPoint } from '../GraphPage/RealTimeGraph/RealTimeGraph.jsx';
+
 import { POINT_ID } from '../../mocks/PointIDs';
 
 import FALBANNER from '../../assets/fal-banner.png';
 import UNIBANNER from '../../assets/uni-banner.png';
+
+import {mockGraphData} from '../../mocks/mockGraphData.jsx';
+import InputCase from '../../common/InputCase/InputCase.jsx';
 
 function ChillerManagement(){
 
@@ -82,7 +90,8 @@ function ChillerManagement(){
         };
 
         async function fetchData(){
-            const GET_URL = "points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
+            //const GET_URL = "points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
+            const GET_URL = "SessionGraph/GetPseudoData";
             try{
                 const response  = await axiosInstance.get(GET_URL);
                 if(response?.data){
@@ -182,7 +191,11 @@ function ChillerManagement(){
     //#endregion
 
     //#region Silent reload and Auto Control
-    const refreshRate = 5;
+    const [refreshRate, setRefreshRate] = useState(0.5);
+
+    function ChangeRefreshRate(field, value){
+        setRefreshRate(Number(value));
+    }
     
     //Auto refresh data at refreshRate
     useEffect(() => {
@@ -223,7 +236,8 @@ function ChillerManagement(){
         };
 
         async function fetchData(){
-            const GET_URL = "points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
+            // const GET_URL = "points/list?page=1&ppp=100&device_id=&company_id=5cf4eb1557a81c267803c398";
+            const GET_URL = "SessionGraph/GetPseudoData";
             try{
                 const response  = await silentAxiosInstance.get(GET_URL);
                 if(response?.data){
@@ -242,7 +256,7 @@ function ChillerManagement(){
         }, refreshRate * 1000);
         return () => clearInterval(interval);
         
-    }, [silentAxiosInstance]);
+    }, [silentAxiosInstance, refreshRate]);
 
     //Auto Turn On/Off Compress in Auto Mode
     useEffect(() => {
@@ -384,6 +398,90 @@ function ChillerManagement(){
     },[globalState.autoControl.volumePressure, globalState.manualControl]);
     //#endregion
 
+
+    //#region Real Time Graph Support
+    const [graphState, setGraphState] = useState(true);
+    const [initialGraphData, setInitialGraphData] = useState(() => {
+        return mockGraphData;
+    });
+    const [newGraphPoints, setNewGraphPoints] = useState(undefined);
+
+    function CreateNewGraph(){
+        const initialGraphDataModel = {
+            graphName: "Áp suất nước",
+            graphUnit: "Pressure (Pa)",
+            currentControlMode: 1,
+            lineData: [
+                {
+                    lineName: "Áp suất nước cấp",
+                    pointerID: POINT_ID["Áp suất nước cấp"]
+                },
+                {
+                    lineName: "Áp suất nước hồi",
+                    pointerID: POINT_ID["Áp suất nước hồi"]
+                }
+            ],
+            currentPointerData: globalState.pointerData
+        }
+
+        const initialGraphData = CreateInitialGraphData(initialGraphDataModel);
+        console.log(initialGraphData);
+        setInitialGraphData(initialGraphData);
+    }
+
+    function handleRTGraph(){
+        if(!graphState){
+            if(controlMode === "off"){
+                alert("Turn On To See Graph <!>");
+                return;
+            }
+            CreateNewGraph()
+            setGraphState(true);
+        }else{
+            setGraphState(false);
+        }
+    }
+
+    const [graphDegree, setGraphDegree] = useState(0.5);
+    function changeGraphDegree(field, value){
+        setGraphDegree(Number(value));
+    }
+    const pointerDataRef = useRef(globalState.pointerData);
+
+    // Keep the ref updated with the latest pointerData
+    useEffect(() => {
+        pointerDataRef.current = globalState.pointerData;
+    }, [globalState.pointerData]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (graphState) {
+                const graphPoints = MapDataToGraphPoint(initialGraphData, pointerDataRef.current);
+                setNewGraphPoints(graphPoints);
+            }
+        }, graphDegree * 1000);
+
+        return () => clearInterval(interval);
+    }, [graphState]);
+    //#endregion
+
+    //#region Listen t Ctrl ~
+      useEffect(() => {
+        function handleKeyDown(event) {
+            if (event.ctrlKey && event.key === '`') {
+                event.preventDefault(); 
+                handleRTGraph();
+            }
+        }
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [controlMode, graphState]);
+    //#endregion
+
     return(
         <div className="chiller-management-wrapper">
             <div className="page-header">
@@ -409,14 +507,31 @@ function ChillerManagement(){
                         onManual={TurnManual}
                         onAuto={TurnAuto}
                     />
+                    <InputCase 
+                        title={"Tốc độ làm mới dữ liệu"}
+                        value={refreshRate}
+                        onSubmit={ChangeRefreshRate}
+                    />
+                    <InputCase 
+                        title={"Tốc độ làm mới biểu đồ"}
+                        value={graphDegree}
+                        onSubmit={changeGraphDegree}
+                    />
                 </div>
                 <div className="image-and-inputs">
-
-                    <VisualGraph 
-                        pumpState={globalState.manualControl.pumpState}
-                        compState={globalState.manualControl.comp}
-                        valveState={globalState.manualControl.valvePercentage}
-                    />
+                    {graphState ? (
+                        <RealTimeVisualGraph 
+                            initialGraphData={initialGraphData}
+                            newRecords={newGraphPoints}
+                            autoScrollWindowSeconds={graphDegree * 60}
+                        />
+                    ) : (
+                        <VisualGraph 
+                            pumpState={globalState.manualControl.pumpState}
+                            compState={globalState.manualControl.comp}
+                            valveState={globalState.manualControl.valvePercentage}
+                        />
+                    )}  
 
                     {GetControlElement()}
 
