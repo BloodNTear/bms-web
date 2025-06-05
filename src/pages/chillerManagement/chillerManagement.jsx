@@ -258,10 +258,12 @@ function ChillerManagement(){
         
     }, [silentAxiosInstance, refreshRate]);
 
-    //Auto Turn On/Off Compress in Auto Mode
+    //#region Auto Turn On/Off Compress in Auto Mode
     useEffect(() => {
+
         if(controlMode === "auto"){
             async function PressCompButton(field, value) {
+
                 const API_ENDPOINT = "points/save";
                 const api_model = {
                     slug: "onoff-may-nen",
@@ -291,7 +293,7 @@ function ChillerManagement(){
                         if(response?.data?.status){
                             callReload && callReload();
                         }else{
-                            console.error("Set Pump Start Stop: " + response?.data?.MESSAGE);
+                            console.error("Set Comp Start Stop: " + response?.data?.MESSAGE);
                         }
                     } catch (error) {
                         console.error(error)
@@ -315,16 +317,16 @@ function ChillerManagement(){
                 PressCompButton("comp", false);
             }
         }
-    },[globalState.autoControl.minInputWaterTemp, globalState.autoControl.currentWaterTemp]);
+    },[globalState.autoControl.minInputWaterTemp, globalState.autoControl.currentWaterTemp, globalState.manualControl.comp, controlMode]);
+    //#endregion
     
-    //Auto Adjust Valve open percentage in Auto Mode 
+    //#region Auto Adjust Valve open percentage in Auto Mode 
     const valveRefreshRate = 5;
     //true for up, false for down
     const [valveAdjustState, setValveAdjustState] = useState(null);
     const valveOpenRef = useRef(null);
 
     useEffect(() => {
-    console.log("useEffect run, current state: " + valveAdjustState);
 
     function limitValve(inputValue) {
         let result = inputValue;
@@ -377,15 +379,13 @@ function ChillerManagement(){
     }
 
     const valveInterval = setInterval(async () => {
-        console.log("interval run");
+
         if(valveAdjustState === true){
-            console.log("open more");
             let newValue = limitValve(valveOpenRef.current + 5);
             valveOpenRef.current = newValue;  // update ref for next interval
             await CallSaveValveValue("valveOpenPercentage", newValue);
         }
         if(valveAdjustState === false){
-            console.log("open less");
             let newValue = limitValve(valveOpenRef.current - 5);
             valveOpenRef.current = newValue;  // update ref for next interval
             await CallSaveValveValue("valveOpenPercentage", newValue);
@@ -394,7 +394,7 @@ function ChillerManagement(){
 
     return () => clearInterval(valveInterval); // clear interval on cleanup
     }, [valveAdjustState]);
-
+    //#endregion
 
     useEffect(() => {
 
@@ -482,7 +482,7 @@ function ChillerManagement(){
         const initialGraphDataModel = GetInitialGraphState();
 
         const initialGraphData = CreateInitialGraphData(initialGraphDataModel);
-        console.log(initialGraphData);
+
         setInitialGraphData(initialGraphData);
     }
 
