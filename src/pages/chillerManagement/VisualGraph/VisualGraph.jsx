@@ -2,7 +2,7 @@ import './VisualGraph.css';
 
 import { useRef, useEffect, useState } from 'react';
 
-import GraphIMG from '../../../assets/graph-image.PNG';
+import GraphIMG from '../../../assets/graph-image-rework.PNG';
 import WaterPipe from './WaterPipe/WaterPipe';
 import WindArrow from './WindArrow/WindArrow';
 
@@ -62,15 +62,15 @@ function VisualGraph({ pumpState, valveState, compState }) {
         width={size.width}
         height={size.height}
         style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'auto', cursor: 'crosshair' }}
-        // onClick={handleSvgClick}
+        onClick={handleSvgClick}
       >
         {/* Entrance To Pump */}
         <WaterPipe
           flowState={pumpState}
           flowDirection={true}
           speed={3}
-          startPoint={[1347, 602]}
-          endPoint={[1298, 602]}
+          startPoint={[1314, 461]}
+          endPoint={[1259, 461]}
         />
 
         {/* Pump to By pass Valve */}
@@ -78,8 +78,8 @@ function VisualGraph({ pumpState, valveState, compState }) {
           flowState={pumpState}
           flowDirection={true}
           speed={3}
-          startPoint={[1124, 602]}
-          endPoint={[650, 602]}
+          startPoint={[1077, 461]}
+          endPoint={[603, 461 ]}
         />
 
         {/* By Pass Valve To Chiller */}
@@ -87,8 +87,8 @@ function VisualGraph({ pumpState, valveState, compState }) {
           flowState={pumpState}
           flowDirection={true}
           speed={4 - GetValveSpeed()}
-          startPoint={[650, 602]}
-          endPoint={[235, 602]}
+          startPoint={[603, 461]}
+          endPoint={[251, 461]}
         />
 
         {/* Chiller To By Pass Valve */}
@@ -96,8 +96,8 @@ function VisualGraph({ pumpState, valveState, compState }) {
           flowState={pumpState}
           flowDirection={true}
           speed={4 - GetValveSpeed()}
-          startPoint={[235, 453]}
-          endPoint={[650, 453]}
+          startPoint={[251, 617]}
+          endPoint={[605, 617]}
           color={'#ff6b00'}
         />
 
@@ -106,8 +106,8 @@ function VisualGraph({ pumpState, valveState, compState }) {
           flowState={pumpState}
           flowDirection={true}
           speed={3}
-          startPoint={[650, 453]}
-          endPoint={[1347, 453]}
+          startPoint={[605, 617]}
+          endPoint={[1314, 617]}
           color={'#ff8800'}
         />
 
@@ -116,8 +116,8 @@ function VisualGraph({ pumpState, valveState, compState }) {
           flowState={pumpState && valveState > 0}
           flowDirection={true}
           speed={GetValveSpeed()}
-          startPoint={[650, 602]}
-          endPoint={[650, 453]}
+          startPoint={[605, 461]}
+          endPoint={[605, 617]}
         />
 
         {/* Visualize Comp Wind */}
@@ -126,39 +126,39 @@ function VisualGraph({ pumpState, valveState, compState }) {
                 <WindArrow 
                     flowState={true}
                     speed={3}
-                    startPoint={[1613, 344]}
-                    endPoint={[1620, 304]}
+                    startPoint={[1593, 344]}
+                    endPoint={[1600, 304]}
                 />
                 <WindArrow 
                     flowState={true}
                     speed={3}
-                    startPoint={[1628, 344]}
-                    endPoint={[1628, 304]}
+                    startPoint={[1608, 344]}
+                    endPoint={[1608, 304]}
                 />
                 <WindArrow 
                     flowState={true}
                     speed={3}
-                    startPoint={[1643, 344]}
-                    endPoint={[1636, 304]}
+                    startPoint={[1623, 344]}
+                    endPoint={[1616, 304]}
                 />
 
                 <WindArrow 
                     flowState={true}
                     speed={3}
-                    startPoint={[1794, 344]}
-                    endPoint={[1801, 304]}
+                    startPoint={[1784, 344]}
+                    endPoint={[1791, 304]}
                 />
                 <WindArrow 
                     flowState={true}
                     speed={3}
-                    startPoint={[1809, 344]}
-                    endPoint={[1809, 304]}
+                    startPoint={[1799, 344]}
+                    endPoint={[1799, 304]}
                 />
                 <WindArrow 
                     flowState={true}
                     speed={3}
-                    startPoint={[1824, 344]}
-                    endPoint={[1817, 304]}
+                    startPoint={[1814, 344]}
+                    endPoint={[1807, 304]}
                 />
             </>
         )}
